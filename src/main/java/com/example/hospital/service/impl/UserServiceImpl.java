@@ -6,13 +6,18 @@ import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 import com.example.hospital.repository.UserRepository;
 import com.example.hospital.service.UserService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-@Service("UserServiceImpl")
+
+//@Service("userServiceImpl")
+@Component
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
@@ -101,13 +106,13 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    // Spring security
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = userRepository.getUserByEmail(email);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("User not Found!");
-//        }
-//        return user;
-//    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.getUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not Found!");
+        }
+        return user;
+    }
 }

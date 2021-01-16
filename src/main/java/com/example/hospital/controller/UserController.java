@@ -4,6 +4,7 @@ import com.example.hospital.model.Qualification;
 import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,21 +18,22 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-//        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping()
     public String create(@ModelAttribute("user")  @Valid User user,
                          BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
-            return "redirect:/people";
-        }
-//        user.setRole(Role.PATIENT);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        if(bindingResult.hasErrors()) {
+//            return "redirect:/people";
+//        }
+        System.out.println(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user.getPassword());
         userService.create(user);
         return "redirect:/users";
     }

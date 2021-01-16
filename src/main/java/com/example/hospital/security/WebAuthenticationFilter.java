@@ -7,8 +7,11 @@ import org.springframework.stereotype.Component;
 
 //@Component
 public class WebAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-//    @Autowired
-//    public WebAuthenticationFilter(AuthenticationManager webAuthenticationManager) {
-//        setAuthenticationManager(webAuthenticationManager);
-//    }
+
+
+
+    @Autowired
+    public WebAuthenticationFilter(AuthenticationManager webAuthenticationManager) {
+        setAuthenticationManager(webAuthenticationManager);
+    }
 }
