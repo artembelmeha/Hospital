@@ -3,7 +3,7 @@
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{doctor.newDoctor}">New Doctor</title>
+    <title th:text="#{patient.newPatient}">New Patient</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
           integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
 
@@ -13,9 +13,9 @@
 
 <div class="m-5 p-1 width: max-content">
 
-    <h2 th:text="#{doctor.doctorRegistration}">Doctor registration</h2>
+    <h2 th:text="#{patient.patientRegistration}">Patient registration</h2>
     <br>
-    <form th:method="POST" th:action="@{|/users/doctors/${user.id}|}" th:object="${user}">
+    <form th:method="POST" th:action="@{|/users/patients/${user.id}|}" th:object="${user}">
         <table>
             <tr>
                 <td>
@@ -42,18 +42,7 @@
                     <input type="text" th:field="*{email}" th:value="*{email}" disabled/>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <label th:text="#{doctor.qualification}">Qualification</label>
-                </td>
-                <td>
-                    <select name="qualification">
-                        <option th:each="qualification : ${T(com.example.hospital.model.Qualification).values()}"
-                                th:value="${qualification}"
-                                th:text="#{'qualification.'+${qualification.name().toLowerCase()}}"/>
-                    </select>
-                </td>
-            </tr>
+
             <tr>
                 <td>
                     <input type="submit" th:value="#{doctor.add}"/>

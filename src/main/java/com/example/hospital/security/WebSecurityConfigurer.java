@@ -30,8 +30,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 //    protected void configure(HttpSecurity http) throws Exception {
 //        http
 //                .authorizeRequests()
-//                .antMatchers(HttpMethod.GET, "/","/login", "/register").permitAll()
-//                .antMatchers(HttpMethod.POST, "/users").permitAll()
+//                .antMatchers(HttpMethod.GET, "/").permitAll()
 //                .anyRequest().authenticated();
 //
 //        http.addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -40,14 +39,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 //                (request, response, authException) -> response.sendRedirect("/login"));
 //    }
 
-//    @Bean
-//    public PasswordEncoder getPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-        builder.jdbcAuthentication().withUser("user").password("{noop}1111");
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

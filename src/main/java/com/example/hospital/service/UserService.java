@@ -1,15 +1,25 @@
 package com.example.hospital.service;
 
+import com.example.hospital.model.Qualification;
+import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 
 import java.util.List;
 
 public interface UserService {
     User create(User user);
+
     User readById(long id);
+
     User update(User user);
+
     void delete(long id);
+
     List<User> getAll();
-    List<User> getAllUserWithoutRole();
-    List<User> getAllNurse();
+
+    List<User> getUserByRoles(Role role);
+
+    boolean setDoctorQualification(long id, Qualification qualification);
+
+    boolean setUserRoleById(long id, Role role);
 }

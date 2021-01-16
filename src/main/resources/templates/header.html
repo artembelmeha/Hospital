@@ -2,12 +2,16 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Modern Hospital</a>
+                <a class="navbar-brand" href="#">Modern Hospital LLC</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a th:href="@{/users}" th:text="#{login.users}">Users</a></li>
+            <ul>
+                <li><a th:href="@{/users}" th:text="#{login.users}">Users</a></li>
+                <li><a th:href="@{/users/patients}" th:text="#{login.patients}">Patients</a></li>
+
+            </ul>
+            <ul>
                 <li><a th:href="@{/users/nurses}"  th:text="#{login.nurses}">Nurse</a></li>
-                <li><a href="#">Page 2</a></li>
+                <li><a th:href="@{/users/doctors}" th:text="#{doctor.doctors}">Doctors</a></li>
             </ul>
             <ul>
                 <a  th:href="@{''(lang=en)}">English</a>
@@ -17,7 +21,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a th:href="@{/registration}"><span class="glyphicon glyphicon-user" th:text="#{login.register}"></span></a></li>
                 <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in" th:text="#{login.login}"></span> </a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in" th:text="#{login.logout}"></span> Logout</a></li>
             </ul>
         </div>
     </nav>

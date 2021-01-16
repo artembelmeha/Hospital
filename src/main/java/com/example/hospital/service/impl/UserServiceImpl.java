@@ -1,6 +1,7 @@
 package com.example.hospital.service.impl;
 
 import com.example.hospital.exception.NullEntityReferenceException;
+import com.example.hospital.model.Qualification;
 import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 import com.example.hospital.repository.UserRepository;
@@ -8,10 +9,8 @@ import com.example.hospital.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service("UserServiceImpl")
 public class UserServiceImpl implements UserService {
@@ -28,6 +27,7 @@ public class UserServiceImpl implements UserService {
         } catch (IllegalArgumentException e) {
             throw new NullEntityReferenceException("User cannot be 'null'");
         }
+
     }
 
     @Override
@@ -65,15 +65,43 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+
     @Override
-    public List<User> getAllUserWithoutRole() {
-        return userRepository.getUsersByRoleEquals(null);
+    public List<User> getUserByRoles(Role role) {
+        return userRepository.getUsersByRoleEquals(role);
     }
+
     @Override
-    public List<User> getAllNurse() {
-        return userRepository.getUsersByRoleEquals(Role.NURSE);
+    public boolean setDoctorQualification(long id, Qualification qualification) {
+        boolean result = false;
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setQualification(qualification);
+            userRepository.save(user);
+            result = true;
+        }
+
+        return result;
     }
-// Spring security
+
+    @Override
+    public boolean setUserRoleById(long id, Role role) {
+        boolean result = false;
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setRole(role);
+            userRepository.save(user);
+            result = true;
+        }
+
+        return result;
+    }
+
+    // Spring security
 //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //        User user = userRepository.getUserByEmail(email);

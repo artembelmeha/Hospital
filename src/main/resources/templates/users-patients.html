@@ -3,7 +3,7 @@
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{login.listOfUsers}">List of Users</title>
+    <title th:text="#{patient.listOfPatients}">List of Patients</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
           integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
 
@@ -13,14 +13,14 @@
 
 <div class="m-5 p-1">
 
-    <h2 th:text="#{login.listOfUsers}">List of Users</h2>
+    <h2 th:text="#{patient.listOfPatients}">List of Patient</h2>
     <br>
-    <table border="1">
+    <table border="1" >
         <tr>
             <th th:text="#{list.no}">No.</th>
             <th th:text="#{list.fullName}">Full name</th>
             <th th:text="#{login.email}">E-mail</th>
-            <th colspan="3" th:text="#{list.operations}">Operations</th>
+            <th colspan="2" th:text="#{list.operations}">Operations</th>
         </tr>
         <tr th:each="user, iStat: ${users}">
             <td th:text="${iStat.index + 1}" />
@@ -30,13 +30,10 @@
             <td th:text="${user.email}"/>
 
             <td>
-                <a th:href="@{|/users/nurses/${user.id}|}" th:text="#{list.signAsNurse}">Sign as Nurse</a>
+                <a th:href="@{|/users/${user.id}/update|}">Edit</a>
             </td>
             <td>
-                <a th:href="@{|/users/doctors/${user.id}|}" th:text="#{list.signAsDoctor}">Sign as Doctor</a>
-            </td>
-            <td>
-                <a th:href="@{|/users/patients/${user.id}|}" th:text="#{list.signAsPatient}">Sign as Patient</a>
+                <a th:href="@{|/users/${user.id}/delete|}">Remove</a>
             </td>
         </tr>
     </table>

@@ -38,31 +38,54 @@ public class UserController {
 
     @GetMapping()
     public String showUsers(Model model) {
-        model.addAttribute("users", userService.getAllUserWithoutRole());
+        model.addAttribute("users", userService.getUserByRoles(null));
         return "/users-list";
-
     }
     @GetMapping("/nurses/{id}")
     public String makeNurse(@PathVariable long id) {
-        User user = userService.readById(id);
-        user.setRole(Role.NURSE);
-        userService.update(user);
+        userService.setUserRoleById(id, Role.NURSE);
         return "redirect:/users/nurses";
     }
 
     @GetMapping("/nurses")
     public String makeNurse(Model model) {
-        model.addAttribute("users", userService.getAllNurse());
+        model.addAttribute("users", userService.getUserByRoles(Role.NURSE));
         return "/users-nurse";
     }
     @GetMapping("/doctors/{id}")
     public String makeDoctor(@PathVariable long id, Model model) {
-        User user = userService.readById(id);
-        user.setRole(Role.DOCTOR);
-        userService.update(user);
-        model.addAttribute("doctor", user);
-        model.addAttribute("qualifications", Qualification.values());
+        userService.setUserRoleById(id, Role.DOCTOR);
+        model.addAttribute("user", userService.readById(id));
         return "doctor-registration";
+    }
+
+    @PostMapping("/doctors/{id}")
+    public String setQualification(@PathVariable long id,@ModelAttribute("user") User user) {
+        userService.setDoctorQualification(id,user.getQualification());
+        return "redirect:/users/doctors";
+    }
+    @GetMapping("/doctors")
+    public String showDoctors(Model model) {
+        model.addAttribute("users", userService.getUserByRoles(Role.DOCTOR));
+        return "/users-doctors";
+    }
+    @GetMapping("/patients/{id}")
+    public String makePatient(@PathVariable long id, Model model) {
+        userService.setUserRoleById(id, Role.PATIENT);
+        model.addAttribute("user", userService.readById(id));
+        return "patient-registration";
+    }
+    @PostMapping("/patients/{id}")
+    public String setPatient(@PathVariable long id,@ModelAttribute("user") User user) {
+        //
+        //
+        //
+        return "redirect:/users/patients";
+    }
+    @GetMapping("/patients")
+    public String showPatients(Model model) {
+        model.addAttribute("users", userService.getUserByRoles(Role.PATIENT));
+        return "/users-patients";
     }
 
 }
