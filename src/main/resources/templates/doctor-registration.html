@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{doctor.newDoctor}">New Doctor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
+          integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+
+</head>
+<body>
+<div th:replace="header"></div>
+
+<div class="m-5 p-1 width: max-content">
+
+    <h2 th:text="#{doctor.doctorRegistration}">Doctor registration</h2>
+    <br>
+    <form th:method="POST" th:action="@{/login}" th:object="${doctor}">
+        <table>
+            <tr>
+                <td>
+                    <label th:text="#{login.firstName}">First name</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{firstName}" id="id" th:value="*{firstName}" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{login.lastName}">First name</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{lastName}" id="id" th:value="*{lastName}" />
+                </td>
+            </tr>
+            <tr>
+            <tr>
+                <td>
+                    <label th:text="#{login.email}">First name</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{email}" id="id" th:value="*{email}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{doctor.qualification}">Qualification</label>
+                </td>
+                <td>
+                    <select name="roleId" id="role">
+                        <span th:each="qualification : ${qualifications}">
+                             <option th:text="#{'qualification.'+${qualification.name().toLowerCase()}}" />
+                             </span>
+                    </select>
+                </td>
+            </tr>
+
+<!--                            <option th:if="${role.id == user.role.id}" th:value="${role.id}" th:selected="${true}"-->
+<!--                                    th:text="${role.name.substring(0, 1) + role.name.substring(1).toLowerCase()}" />-->
+<!--                            <option th:unless="${role.id == user.role.id}" th:value="${role.id}"-->
+<!--                                    th:text="${role.name.substring(0, 1) + role.name.substring(1).toLowerCase()}" />-->
+
+
+
+        </table>
+    </form>
+</div>
+</body>
+</html>

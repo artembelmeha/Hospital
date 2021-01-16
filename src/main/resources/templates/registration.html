@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{login.registration}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
+          integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+
+</head>
+<body>
+<div th:replace="header"></div>
+<div class="m-5" p-1>
+    <h2 th:text="#{login.newUserRegistration}"></h2>
+    <form th:method="POST" th:action="@{/users}" th:object="${user}">
+        <table>
+            <tr>
+                <td>
+                    <label for="firstName"th:text="#{login.firstName}+':'"></label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{firstName}" id="firstName"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="lastName"th:text="#{login.lastName}+':'"></label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{lastName}" id="lastName"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="email" th:text="#{login.email}+':'"></label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{email}" id="email"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="password" th:text="#{login.password}+':'"></label>
+                </td>
+                <td>
+                    <input type="password" th:field="*{password}" id="password"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="submit" th:value="#{login.register}"/>
+                </td>
+                <td>
+                    <input type="reset" th:value="#{login.clear}"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

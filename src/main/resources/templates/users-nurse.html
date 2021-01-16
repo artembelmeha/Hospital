@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{nurse.listOfNurse}">List of Nurse</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
+          integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+
+</head>
+<body>
+<div th:replace="header"></div>
+
+<div class="m-5 p-1">
+
+    <h2 th:text="#{nurse.listOfNurse}">List of Nurse</h2>
+    <br>
+    <table border="1" >
+        <tr>
+            <th th:text="#{list.no}">No.</th>
+            <th th:text="#{list.fullName}">Full name</th>
+            <th th:text="#{login.email}">E-mail</th>
+            <th colspan="2" th:text="#{list.operations}">Operations</th>
+        </tr>
+        <tr th:each="user, iStat: ${users}">
+            <td th:text="${iStat.index + 1}" />
+            <td>
+                <a th:text="${user.firstName + ' ' + user.lastName}" />
+            </td>
+            <td th:text="${user.email}"/>
+
+            <td>
+                <a th:href="@{|/users/${user.id}/update|}">Edit</a>
+            </td>
+            <td>
+                <a th:href="@{|/users/${user.id}/delete|}">Remove</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
