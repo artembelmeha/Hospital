@@ -43,10 +43,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 (request, response, authException) -> response.sendRedirect("login-form"));
 
     }
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder builder, AuthenticationProvider authenticationProvider) {
-//        builder.authenticationProvider(authenticationProvider);
-//    }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
