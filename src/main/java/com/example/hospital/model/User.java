@@ -17,9 +17,6 @@ import java.util.List;
 @Entity
 @ToString
 @Table(name = "users")
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name="role",
-//        discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

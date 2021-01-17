@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.hospital.controller.Constants.PAGE_HOME;
+
 @Component
 public class WebAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -34,7 +36,7 @@ public class WebAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         SecurityContextHolder.getContext().setAuthentication(authResult);
-        response.sendRedirect("/home");
+        response.sendRedirect(PAGE_HOME);
     }
 
     @Override

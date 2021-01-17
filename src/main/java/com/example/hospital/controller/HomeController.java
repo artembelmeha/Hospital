@@ -14,7 +14,7 @@ public class HomeController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping({"/", "/home"})
     public String home(){
-        return "index";
+        return PAGE_HOME;
     }
 
 

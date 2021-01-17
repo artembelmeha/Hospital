@@ -6,6 +6,7 @@ import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,7 @@ public class UserController {
     @GetMapping()
     public String register(Model model) {
         model.addAttribute("user", new User());
-        return "/registration";
+        return PAGE_REGISTRATION;
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
@@ -43,10 +44,10 @@ public class UserController {
         user.setRole(Role.ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.create(user);
-        return "redirect:/";
+        return REDIRECT_PREFIX;
     }
 
-    @GetMapping("/forApprove")
+    @GetMapping("/recent")
     public String showUsers(Model model) {
         model.addAttribute("users", userService.getUserByRoles(null));
         return "/users-list";
@@ -89,8 +90,8 @@ public class UserController {
     public String setPatient(@PathVariable long id,@ModelAttribute("user") User user) {
         //
         //
-        //
-        return "redirect:/users/patients";
+        //                                                     //todo: PatientDTO
+        return REDIRECT_TO_PAGE_PATIENTS;
     }
     @GetMapping("/patients")
     public String showPatients(Model model) {
