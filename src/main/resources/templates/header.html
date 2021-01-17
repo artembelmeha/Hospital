@@ -1,12 +1,12 @@
 <div xmlns:th="http://www.thymeleaf.org"
-     xmlns:security="http://www.springframework.org/security/tags">
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Modern Hospital LLC</a>
             </div>
             <ul>
-                <li><a th:href="@{/users}" th:text="#{login.users}">Users</a></li>
+                <li><a th:href="@{/users/forApprove}" th:text="#{login.users}">Users</a></li>
                 <li><a th:href="@{/users/patients}" th:text="#{login.patients}">Patients</a></li>
 
             </ul>
@@ -20,9 +20,15 @@
                 <a  th:href="@{''(lang=ua)}">Українська</a>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a th:href="@{/registration}"><span class="glyphicon glyphicon-user" th:text="#{login.register}"></span></a></li>
-                <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in" th:text="#{login.login}"></span> </a></li>
-                <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in" th:text="#{login.logout}"></span> Logout</a></li>
+                <li><a th:href="@{/users}"><span class="glyphicon glyphicon-user" th:text="#{login.registration}"
+                                                 sec:authorize="isAnonymous()"></span></a></li>
+                <li><a th:href="@{/login-form}"><span class="glyphicon glyphicon-log-in" th:text="#{login.login}"
+                                                      sec:authorize="isAnonymous()"></span> </a></li>
+            </ul>
+            <ul>
+                <form th:action="@{/logout}" method="post" style="display: inline-block" sec:authorize="isAuthenticated()">
+                    <input type="submit" th:value="#{login.logout}">
+                </form>
             </ul>
         </div>
     </nav>

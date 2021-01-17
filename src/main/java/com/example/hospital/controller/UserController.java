@@ -5,6 +5,7 @@ import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,20 +26,27 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
+    @GetMapping()
+    public String register(Model model) {
+        model.addAttribute("user", new User());
+        return "/registration";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     @PostMapping()
     public String create(@ModelAttribute("user")  @Valid User user,
                          BindingResult bindingResult){
 //        if(bindingResult.hasErrors()) {
 //            return "redirect:/people";
 //        }
-        System.out.println(user.getPassword());
+        user.setRole(Role.ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        System.out.println(user.getPassword());
         userService.create(user);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
-    @GetMapping()
+    @GetMapping("/forApprove")
     public String showUsers(Model model) {
         model.addAttribute("users", userService.getUserByRoles(null));
         return "/users-list";

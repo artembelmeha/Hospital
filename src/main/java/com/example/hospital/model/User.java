@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -58,14 +59,9 @@ public class User implements UserDetails {
     private List<User> patients = new ArrayList<>();
 
 
-
-
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(role);
     }
 
     @Override
