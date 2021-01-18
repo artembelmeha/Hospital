@@ -16,13 +16,17 @@
 
             </ul>
             <ul>
-                <li><a th:href="@{/users/nurses}"  th:text="#{login.nurses}">Nurse</a></li>
-                <li><a th:href="@{/users/doctors}" th:text="#{doctor.doctors}">Doctors</a></li>
+                <li sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/users/nurses}" th:text="#{login.nurses}">Nurse</a>
+                </li>
+                <li sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/users/doctors}" th:text="#{doctor.doctors}">Doctors</a>
+                </li>
             </ul>
             <ul>
-                <a  th:href="@{''(lang=en)}">English</a>
+                <a th:href="@{''(lang=en)}">English</a>
                 <a>/</a>
-                <a  th:href="@{''(lang=ua)}">Українська</a>
+                <a th:href="@{''(lang=ua)}">Українська</a>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a th:href="@{/users}"><span class="glyphicon glyphicon-user" th:text="#{login.registration}"
@@ -31,7 +35,8 @@
                                                       sec:authorize="isAnonymous()"></span> </a></li>
             </ul>
             <ul>
-                <form th:action="@{/logout}" method="post" style="display: inline-block" sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" style="display: inline-block"
+                      sec:authorize="isAuthenticated()">
                     <input type="submit" th:value="#{login.logout}">
                 </form>
             </ul>

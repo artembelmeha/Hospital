@@ -48,7 +48,7 @@ public class Assignment {
     @ManyToMany
     @JoinTable(name = "assignment_nursehelper",
             joinColumns = @JoinColumn(name = "assignment_id"),
-            inverseJoinColumns = @JoinColumn(name = "nursehelper_id"))
+            inverseJoinColumns = @JoinColumn(name = "nurse_id"))
     private Set<User> nurses;
 
 }

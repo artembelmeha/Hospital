@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{patient.info}">New Patient</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
+          integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+
+</head>
+<body>
+<div th:replace="header"></div>
+
+<div class="m-5 p-1 width: max-content">
+
+    <h2 th:text="#{patient.info}">Patient info</h2>
+    <br>
+    <p th:text="#{login.firstName}+ ' :    '+${patientInfoDto.getFirstName()}">First Name</p>
+    <p th:text="#{login.lastName}+ ' :    '+${patientInfoDto.getLastName()}">Last Name</p>
+    <p th:text="#{login.email}+ ' :    '+${patientInfoDto.getEmail()}">Email</p>
+    <p th:text="#{patient.telephoneNumber}+ ' :    '+${patientInfoDto.getTelephoneNumber()}">Telephone</p>
+    <p th:text="#{patient.isOnTreatment}+ ' :    '+#{'patient.'+${patientInfoDto.isOnTreatment()}}">On Treatment</p>
+    <p th:text="#{patient.birthDate}+ ' :    '+${patientInfoDto.getBirthDate()}">Birth Date</p>
+    <p th:text="#{patient.sex}+ ' :    '+#{'patient.'+${patientInfoDto.getSex().name().toLowerCase()}}">Sex</p>
+    <p th:text="#{patient.doctor}+ ' :    '+${patientInfoDto.getDoctorFirstName}
++ '  '+${patientInfoDto.getDoctorLastName}+ ',  '
++#{'qualification.'+${patientInfoDto.getDoctorQualification.name().toLowerCase()}}">Doctor</p>
+    <a th:text="#{patient.medicalCard}" th:href="@{|/medicalCard/${patientInfoDto.getMedicalCardId()}|}">Medical Card</a>
+
+    <form th:method="POST" th:action="@{|/users/patients/${#authentication.details.id}|}" th:object="${patientInfoDto}">
+        <table>
+
+        </table>
+    </form>
+</div>
+</body>
+</html>

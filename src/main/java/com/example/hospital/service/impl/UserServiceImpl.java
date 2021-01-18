@@ -1,5 +1,8 @@
 package com.example.hospital.service.impl;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
+import com.example.hospital.dto.PatientDTO;
 import com.example.hospital.exception.NullEntityReferenceException;
 import com.example.hospital.model.MedicalCard;
 import com.example.hospital.model.Qualification;
@@ -12,8 +15,11 @@ import com.example.hospital.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,38 +28,33 @@ import java.util.List;
 import java.util.Optional;
 
 
-//@Service("userServiceImpl")
 @Component
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
+    private static final Logger LOGGER = getLogger(UserServiceImpl.class);
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Resource
+    private UserRepository userRepository;
 
     @Override
     public User create(User user) {
         try {
             return userRepository.save(user);
         } catch (IllegalArgumentException e) {
+            LOGGER.error("Error during saving user.", e);
             throw new NullEntityReferenceException("User cannot be 'null'");
         }
-
     }
 
     @Override
-    public User readById(long id) {
-        Optional<User> optional = userRepository.findById(id);
-        if (optional.isPresent()) {
-            return optional.get();
-        }
-        throw new EntityNotFoundException("User with id " + id + " not found");
+    public User findById(long id) {
+        return userRepository.findById(id)
+              .orElseThrow(() -> new EntityNotFoundException("User with id [" + id + "] not found."));
     }
 
     @Override
     public User update(User user) {
         if (user != null) {
-            User oldUser = readById(user.getId());
+            User oldUser = findById(user.getId());
             if (oldUser != null) {
                 return userRepository.save(user);
             }
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(long id) {
-        User user = readById(id);
+        User user = findById(id);
         if (user != null) {
             userRepository.delete(user);
         } else {
@@ -76,40 +77,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-
     @Override
-    public List<User> getUserByRoles(Role role) {
+    public List<User> getUsersByRole(Role role) {
         return userRepository.getUsersByRoleEquals(role);
     }
 
     @Override
-    public boolean setDoctorQualification(long id, Qualification qualification) {
-        boolean result = false;
-        Optional<User> optionalUser = userRepository.findById(id);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setQualification(qualification);
-            userRepository.save(user);
-            result = true;
-        }
-
-        return result;
+    public void setDoctorQualification(long id, Qualification qualification) {
+        User user = findById(id);
+        user.setQualification(qualification);
+        userRepository.save(user);
     }
 
     @Override
-    public boolean setUserRoleById(long id, Role role) {
-        boolean result = false;
-        Optional<User> optionalUser = userRepository.findById(id);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setRole(role);
-            userRepository.save(user);
-            result = true;
-        }
-
-        return result;
+    public void setUserRole(long id, Role role) {
+        User user = findById(id);
+        user.setRole(role);
+        userRepository.save(user);
     }
 
 
@@ -123,8 +107,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersPatientsById(long id) {
-        User user = userRepository.getUsersById(id);
+    public List<User> getPatientsByEmployeesId(long id) {
+        User user = userRepository.getUserById(id);
         if(user.getRole().equals(ADMIN)) {
             return userRepository.getUsersByRoleEquals(PATIENT);
         }
@@ -132,7 +116,7 @@ public class UserServiceImpl implements UserService {
             return userRepository.getUserByDoctor(user);
         }
         if(user.getRole().equals(NURSE)) {
-            return new ArrayList<>();  //todo: not finished for nurse
+            return userRepository.getUsersByNurseId(id);  ///
         }
         return new ArrayList<>();
     }
@@ -140,16 +124,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User patientDtoToUsers(PatientDTO patientDTO) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        User user = userRepository.getUsersById(patientDTO.getId());
+        User user = userRepository.getUserById(patientDTO.getId());
         user.setFirstName(patientDTO.getFirstName());
         user.setLastName(patientDTO.getLastName());
         user.setBirthDate(LocalDate.parse(patientDTO.getBirthDate(), formatter));
         user.setTelephoneNumber(patientDTO.getTelephoneNumber());
         user.setSex(patientDTO.getSex());
-        user.setDoctor(userRepository.getUsersById(patientDTO.getDoctorId()));
+        user.setDoctor(userRepository.getUserById(patientDTO.getDoctorId()));
         user.setMedicalCard(new MedicalCard());
         user.setOnTreatment(true);
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public User getUserById(long id) {
+        return userRepository.getUserById(id);
     }
 }

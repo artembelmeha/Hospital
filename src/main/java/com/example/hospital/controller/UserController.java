@@ -1,24 +1,28 @@
 package com.example.hospital.controller;
 
-import com.example.hospital.model.Qualification;
-import com.example.hospital.model.Role;
-import com.example.hospital.model.User;
-import com.example.hospital.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import static com.example.hospital.controller.Constants.*;
+import static com.example.hospital.model.Role.*;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import javax.validation.Valid;
+
+import com.example.hospital.dto.PatientDTO;
+import com.example.hospital.dto.PatientInfoDto;
+import org.slf4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import com.example.hospital.model.User;
+import com.example.hospital.service.UserService;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    private static final Logger LOGGER  = getLogger(UserController.class);
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -39,10 +43,11 @@ public class UserController {
     @PostMapping()
     public String create(@ModelAttribute("user")  @Valid User user,
                          BindingResult bindingResult){
-//        if(bindingResult.hasErrors()) {
-//            return "redirect:/people";
-//        }
-        user.setRole(Role.ADMIN);
+        if(bindingResult.hasErrors()) {
+            LOGGER.error("Error during binding user.");
+            bindingResult.getAllErrors().forEach(error -> LOGGER.error(error.getDefaultMessage()));
+            return PAGE_REGISTRATION;
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.create(user);
         return REDIRECT_PREFIX;
@@ -50,53 +55,65 @@ public class UserController {
 
     @GetMapping("/recent")
     public String showUsers(Model model) {
-        model.addAttribute("users", userService.getUserByRoles(null));
-        return "/users-list";
+        model.addAttribute(USERS, userService.getUsersByRole(null));
+        return PAGE_USERS_RECENT;
     }
+
     @GetMapping("/nurses/{id}")
-    public String makeNurse(@PathVariable long id) {
-        userService.setUserRoleById(id, Role.NURSE);
-        return "redirect:/users/nurses";
+    public String setAsNurse(@PathVariable long id) {
+        userService.setUserRole(id, NURSE);
+        return REDIRECT_TO_PAGE_NURSES;
     }
 
     @GetMapping("/nurses")
-    public String makeNurse(Model model) {
-        model.addAttribute("users", userService.getUserByRoles(Role.NURSE));
-        return "/users-nurse";
+    public String getAllNurses(Model model) {
+        model.addAttribute(USERS, userService.getUsersByRole(NURSE)); //todo: nurseDTO
+        return PAGE_NURSES;
     }
+
     @GetMapping("/doctors/{id}")
-    public String makeDoctor(@PathVariable long id, Model model) {
-        userService.setUserRoleById(id, Role.DOCTOR);
-        model.addAttribute("user", userService.readById(id));
-        return "doctor-registration";
+    public String setAsDoctor(@PathVariable long id, Model model) {
+        userService.setUserRole(id, DOCTOR);
+        model.addAttribute(USER, userService.findById(id)); //todo: doctorDTO
+        return PAGE_DOCTOR_REGISTRATION;
     }
 
     @PostMapping("/doctors/{id}")
-    public String setQualification(@PathVariable long id,@ModelAttribute("user") User user) {
-        userService.setDoctorQualification(id,user.getQualification());
-        return "redirect:/users/doctors";
+    public String setDoctorQualification(@PathVariable long id, @ModelAttribute User user) {
+        userService.setDoctorQualification(id, user.getQualification());
+        return REDIRECT_TO_PAGE_DOCTORS;
     }
+
     @GetMapping("/doctors")
-    public String showDoctors(Model model) {
-        model.addAttribute("users", userService.getUserByRoles(Role.DOCTOR));
-        return "/users-doctors";
+    public String getAllDoctors(Model model) {
+        model.addAttribute(USERS, userService.getUsersByRole(DOCTOR));
+        return PAGE_DOCTORS;
     }
+
     @GetMapping("/patients/{id}")
-    public String makePatient(@PathVariable long id, Model model) {
-        userService.setUserRoleById(id, Role.PATIENT);
-        model.addAttribute("user", userService.readById(id));
-        return "patient-registration";
+    public String setAsPatient(@PathVariable long id, Model model) {
+        userService.setUserRole(id, PATIENT);
+        model.addAttribute(PATIENT_DTO, new PatientDTO(userService.findById(id)));
+        model.addAttribute(DOCTORS, userService.getUsersByRole(DOCTOR));
+        return PAGE_PATIENT_REGISTRATION;
     }
+
     @PostMapping("/patients/{id}")
     public String setPatient(@PathVariable long id,
                              @ModelAttribute("patientDTO") PatientDTO patientDTO) {
         userService.patientDtoToUsers(patientDTO);
         return REDIRECT_TO_PAGE_PATIENTS_OF+id;
     }
-    @GetMapping("/patients")
-    public String showPatients(Model model) {
-        model.addAttribute("users", userService.getUserByRoles(Role.PATIENT));
-        return "/users-patients";
+
+    @GetMapping("/patients/of/{id}")
+    public String getAllPatients(@PathVariable long id, Model model) {
+        model.addAttribute(USERS, userService.getPatientsByEmployeesId(id));
+        return PAGE_PATIENTS;
+    }
+    @GetMapping("/patients/{id}/info")
+    public String getPatientInfo(@PathVariable long id, Model model) {
+        model.addAttribute(PATIENT_INFO_DTO, new PatientInfoDto(userService.getUserById(id)));
+        return PAGE_PATIENT_INFO;
     }
 
 }

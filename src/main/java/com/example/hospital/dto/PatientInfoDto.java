@@ -3,10 +3,11 @@ package com.example.hospital.dto;
 import com.example.hospital.model.Qualification;
 import com.example.hospital.model.Sex;
 import com.example.hospital.model.User;
+import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
 
-
+@Data
 public class PatientInfoDto {
 
     private long id;
@@ -21,6 +22,7 @@ public class PatientInfoDto {
     private String birthDate;
     private Sex sex;
     private String telephoneNumber;
+    private Long medicalCardId;
 
     public PatientInfoDto() {
     }
@@ -39,5 +41,6 @@ public class PatientInfoDto {
         this.birthDate = user.getBirthDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.sex = user.getSex();
         this.telephoneNumber = user.getTelephoneNumber();
+        this.medicalCardId = user.getMedicalCard().getId();
     }
 }

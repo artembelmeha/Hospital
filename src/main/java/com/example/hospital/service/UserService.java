@@ -14,7 +14,7 @@ public interface UserService extends UserDetailsService {
 
     User create(User user);
 
-    User readById(long id);
+    User findById(long id);
 
     User update(User user);
 
@@ -22,12 +22,16 @@ public interface UserService extends UserDetailsService {
 
     List<User> getAll();
 
-    List<User> getUserByRoles(Role role);
+    List<User> getUsersByRole(Role role);
 
-    boolean setDoctorQualification(long id, Qualification qualification);
+    List<User> getPatientsByEmployeesId(long id);
 
-    boolean setUserRoleById(long id, Role role);
+    void setDoctorQualification(long id, Qualification qualification);
+
+    void setUserRole(long id, Role role);
 
     User patientDtoToUsers(PatientDTO patientDTO);
+
+    User getUserById(long id);
 }
 

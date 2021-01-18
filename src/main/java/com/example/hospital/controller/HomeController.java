@@ -1,12 +1,11 @@
 package com.example.hospital.controller;
 
 
-import com.example.hospital.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import static com.example.hospital.controller.Constants.*;
 
 @Controller
 public class HomeController {
@@ -16,13 +15,4 @@ public class HomeController {
     public String home(){
         return PAGE_HOME;
     }
-
-
-//    @GetMapping("/login")
-//    public String login(Model model) {
-//        model.addAttribute("user", new User());
-//        return "login";
-//    }
-
-
 }
