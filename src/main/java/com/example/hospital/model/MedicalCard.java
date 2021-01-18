@@ -14,6 +14,7 @@ import java.util.List;
 @ToString
 @Table(name = "cards")
 public class MedicalCard {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

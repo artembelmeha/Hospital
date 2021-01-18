@@ -9,6 +9,7 @@ public interface Constants {
 	String PAGE_NURSES = "users-nurse";
 	String PAGE_DOCTORS = "users-doctors";
 	String PAGE_PATIENTS = "users-patients";
+	String PAGE_MEDICAL_CARD = "medical-card";
 
 	String PAGE_DOCTOR_REGISTRATION = "doctor-registration";
 	String PAGE_PATIENT_REGISTRATION = "patient-registration";
@@ -29,7 +30,9 @@ public interface Constants {
 
 	String USERS = "users";
 	String USER = "user";
+	String ASSIGNMENTS = "assignment";
 	String DOCTORS = "doctors";
 	String PATIENT_DTO = "patientDTO";
 	String PATIENT_INFO_DTO = "patientInfoDto";
+	String ASSIGNMENT_DTO = "assignmentDto";
 }
