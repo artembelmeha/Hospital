@@ -49,13 +49,14 @@ public class UserController {
             return PAGE_REGISTRATION;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(UNDEFINE);
         userService.create(user);
         return REDIRECT_PREFIX;
     }
 
     @GetMapping("/recent")
     public String showUsers(Model model) {
-        model.addAttribute(USERS, userService.getUsersByRole(null));
+        model.addAttribute(USERS, userService.getUsersByRole(UNDEFINE));
         return PAGE_USERS_RECENT;
     }
 
@@ -73,7 +74,6 @@ public class UserController {
 
     @GetMapping("/doctors/{id}")
     public String setAsDoctor(@PathVariable long id, Model model) {
-        userService.setUserRole(id, DOCTOR);
         model.addAttribute(USER, userService.findById(id)); //todo: doctorDTO
         return PAGE_DOCTOR_REGISTRATION;
     }

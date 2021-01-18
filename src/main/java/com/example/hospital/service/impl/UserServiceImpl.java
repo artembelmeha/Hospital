@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setDoctorQualification(long id, Qualification qualification) {
         User user = findById(id);
+        user.setRole(DOCTOR);
         user.setQualification(qualification);
         userRepository.save(user);
     }
