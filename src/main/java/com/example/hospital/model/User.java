@@ -1,17 +1,18 @@
 package com.example.hospital.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Data
 @Entity
@@ -54,6 +55,30 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "doctor")
     private List<User> patients = new ArrayList<>();
+
+
+    @Column(name = "on_treatment", nullable = false)
+    private boolean isOnTreatment = false;
+
+    @Column(name = "birth_date")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    private LocalDate birthDate;
+
+    @Column(name = "sex")
+    private Sex sex;
+
+    @Column(name = "telephone_number")
+    private String telephoneNumber;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id", referencedColumnName = "id")
+    private MedicalCard medicalCard;
+
+    @ManyToMany
+    @JoinTable(name = "assignment_nursehelper",
+            joinColumns = @JoinColumn(name = "nursehelper_id"),
+            inverseJoinColumns = @JoinColumn(name = "assignment_id"))
+    private Set<Assignment> assignmentList;
 
 
     @Override

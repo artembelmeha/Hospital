@@ -15,14 +15,14 @@
 
     <h2 th:text="#{patient.patientRegistration}">Patient registration</h2>
     <br>
-    <form th:method="POST" th:action="@{|/users/patients/${user.id}|}" th:object="${user}">
+    <form th:method="POST" th:action="@{|/users/patients/${#authentication.details.id}|}" th:object="${patientDTO}">
         <table>
             <tr>
                 <td>
                     <label th:text="#{login.firstName}">First name</label>
                 </td>
                 <td>
-                    <input type="text" th:field="*{firstName}" th:value="*{firstName}" disabled/>
+                    <input type="text" th:field="*{firstName}" th:value="*{firstName}"/>
                 </td>
             </tr>
             <tr>
@@ -30,7 +30,7 @@
                     <label th:text="#{login.lastName}">First name</label>
                 </td>
                 <td>
-                    <input type="text" th:field="*{lastName}" th:value="*{lastName}" disabled/>
+                    <input type="text" th:field="*{lastName}" th:value="*{lastName}"/>
                 </td>
             </tr>
             <tr>
@@ -40,6 +40,46 @@
                 </td>
                 <td>
                     <input type="text" th:field="*{email}" th:value="*{email}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{patient.birthDate}">Date Birth</label>
+                </td>
+                <td>
+                    <input type="date" th:field="*{birthDate}" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{patient.telephoneNumber}">Telephone Number</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{telephoneNumber}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{patient.sex}">Sex</label>
+                </td>
+                <td>
+                    <select name="sex">
+                        <option th:each="sex : ${T(com.example.hospital.model.Sex).values()}"
+                                th:value="${sex}"
+                                th:text="#{'patient.'+${sex.name().toLowerCase()}}"/>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{patient.doctor}">Sex</label>
+                </td>
+                <td>
+                    <select th:field="*{doctorId}">
+                        <option th:each="doctor : ${doctors}"
+                                th:value="${doctor.id}"
+                                th:utext="${doctor.qualification+': '+doctor.firstName +' '+doctor.lastName}"/>
+                    </select>
                 </td>
             </tr>
 
@@ -52,6 +92,8 @@
                 </td>
             </tr>
         </table>
+        <input type="hidden" th:field="*{id}" th:value="*{id}"/>
+        <input type="hidden" th:field="*{email}" th:value="*{email}"/>
     </form>
 </div>
 </body>

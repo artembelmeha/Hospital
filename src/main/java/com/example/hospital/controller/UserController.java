@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -87,11 +88,10 @@ public class UserController {
         return "patient-registration";
     }
     @PostMapping("/patients/{id}")
-    public String setPatient(@PathVariable long id,@ModelAttribute("user") User user) {
-        //
-        //
-        //                                                     //todo: PatientDTO
-        return REDIRECT_TO_PAGE_PATIENTS;
+    public String setPatient(@PathVariable long id,
+                             @ModelAttribute("patientDTO") PatientDTO patientDTO) {
+        userService.patientDtoToUsers(patientDTO);
+        return REDIRECT_TO_PAGE_PATIENTS_OF+id;
     }
     @GetMapping("/patients")
     public String showPatients(Model model) {

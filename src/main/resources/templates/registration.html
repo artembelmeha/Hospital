@@ -14,6 +14,7 @@
     <h2 th:text="#{login.newUserRegistration}"></h2>
     <form th:method="POST" th:action="@{/users}" th:object="${user}">
         <table>
+
             <tr>
                 <td>
                     <label for="firstName"th:text="#{login.firstName}+':'"></label>
@@ -21,22 +22,31 @@
                 <td>
                     <input type="text" th:field="*{firstName}" id="firstName"/>
                 </td>
+                <td>
+                    <div style="color: #ff0000" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First error</div>
+                </td>
             </tr>
             <tr>
+
                 <td>
                     <label for="lastName"th:text="#{login.lastName}+':'"></label>
                 </td>
                 <td>
                     <input type="text" th:field="*{lastName}" id="lastName"/>
                 </td>
+                <td>
+                    <div style="color: #ff0000" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last error</div>
+                </td>
             </tr>
-
             <tr>
                 <td>
                     <label for="email" th:text="#{login.email}+':'"></label>
                 </td>
                 <td>
                     <input type="text" th:field="*{email}" id="email"/>
+                </td>
+                <td>
+                <div style="color: #ff0000" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
                 </td>
             </tr>
             <tr>
@@ -45,6 +55,9 @@
                 </td>
                 <td>
                     <input type="password" th:field="*{password}" id="password"/>
+                </td>
+                <td>
+                <div style="color: #ff0000" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
                 </td>
             </tr>
 

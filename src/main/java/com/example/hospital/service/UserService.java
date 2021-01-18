@@ -1,5 +1,6 @@
 package com.example.hospital.service;
 
+import com.example.hospital.dto.PatientDTO;
 import com.example.hospital.model.Qualification;
 import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
+
     User create(User user);
 
     User readById(long id);
@@ -26,4 +28,6 @@ public interface UserService extends UserDetailsService {
 
     boolean setUserRoleById(long id, Role role);
 
+    User patientDtoToUsers(PatientDTO patientDTO);
 }
+

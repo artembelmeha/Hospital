@@ -20,6 +20,7 @@
             <th th:text="#{list.no}">No.</th>
             <th th:text="#{list.fullName}">Full name</th>
             <th th:text="#{login.email}">E-mail</th>
+
             <th colspan="2" th:text="#{list.operations}">Operations</th>
         </tr>
         <tr th:each="user, iStat: ${users}">
