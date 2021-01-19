@@ -1,6 +1,7 @@
 package com.example.hospital.model;
 
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class Assignment {
     private String name;
 
     @Column(name = "date")
+    @DateTimeFormat(pattern = "{date.format}")
     private LocalDateTime date;
 
     @Column(name = "quantity", nullable = false)

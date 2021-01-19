@@ -16,10 +16,10 @@
 <!--    <form th:method="POST" th:action="@{|/users/patients/${#authentication.details.id}|}" th:object="${assignmentDto}"> -->
 <!--        -->
 <!--    </form>-->
-    <form class="button" th:action="@{/home}" method="GET">
-        <input type="submit" value="Ha"/>
+    <form class="button" th:action="@{|/assignment/${medicalCardId}|}" method="GET">
+        <input type="submit" th:value="#{assignment.createNew}"/>
     </form>
-
+    <br>
     <table border="1" >
         <tr>
             <th th:text="#{list.no}">No.</th>

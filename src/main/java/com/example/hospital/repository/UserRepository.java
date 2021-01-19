@@ -19,10 +19,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> getUserByDoctor(User user);
 
-    @Query(value = "SELECT *FROM users WHERE users.card_id in (select distinct(a.card_id) " +
-            "       from assignment_nursehelper an " +
-            "                join assignment a on a.id = an.assignment_id " +
-            "       where an.nurse_id = ?1)", nativeQuery = true)
+    @Query(value = "SELECT *FROM users WHERE users.card_id in " +
+            "(select distinct(a.card_id) from assignment_nursehelper an " +
+            "join assignment a on a.id = an.assignment_id where an.nurse_id = ?1)", nativeQuery = true)
     List<User> getUsersByNurseId(long id);
+
 
 }

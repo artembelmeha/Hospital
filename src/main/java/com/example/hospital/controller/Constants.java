@@ -10,6 +10,7 @@ public interface Constants {
 	String PAGE_DOCTORS = "users-doctors";
 	String PAGE_PATIENTS = "users-patients";
 	String PAGE_MEDICAL_CARD = "medical-card";
+	String PAGE_ASSIGNMENT_NEW = "assignment-new";
 
 	String PAGE_DOCTOR_REGISTRATION = "doctor-registration";
 	String PAGE_PATIENT_REGISTRATION = "patient-registration";
@@ -24,13 +25,13 @@ public interface Constants {
 
 
 
-	String REDIRECT_TO_PEOPLE_PAGE = REDIRECT_PREFIX + "/people";
 
 	String INDEX_PAGE = "index";
 
 	String USERS = "users";
 	String USER = "user";
-	String ASSIGNMENTS = "assignment";
+	String MEDICAL_CARD_ID = "medicalCardId";
+	String ASSIGNMENTS = "assignments";
 	String DOCTORS = "doctors";
 	String PATIENT_DTO = "patientDTO";
 	String PATIENT_INFO_DTO = "patientInfoDto";

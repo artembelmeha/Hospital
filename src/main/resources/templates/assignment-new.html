@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{assignment.createNew}">List of Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
+          integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+
+</head>
+<body>
+<div th:replace="header"></div>
+
+<div class="m-5 p-1">
+
+    <h2 th:text="#{assignment.createNew}">Create New Assignment</h2>
+    <br>
+
+    <form th:method="POST" th:action="@{/assignment/add}" th:object="${assignmentDto}">
+        <table>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.currentDiagnosis}">Current Diagnosis</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{currentDiagnosis}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.date}">Date</label>
+                </td>
+                <td>
+                    <input type="date" th:field="*{date}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.name}">Name assignment</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{name}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.notes}">Notes</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{notes}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.quantity}">Quantity</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{quantity}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.type}">Type</label>
+                </td>
+                <td>
+                    <select name="assignmentType">
+                        <option th:each="type : ${T(com.example.hospital.model.AssignmentType).values()}"
+                                th:value="${type}"
+                                th:text="#{'type.'+${type.name().toLowerCase()}}"/>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" th:value="#{doctor.add}"/>
+                </td>
+                <td>
+                    <input type="reset" th:value="#{login.clear}"/>
+                </td>
+            </tr>
+        </table>
+            <input type="hidden" th:field="*{medicalCardID}" th:value="*{medicalCardID}"/>
+    </form>
+</div>
+</body>
+</html>
