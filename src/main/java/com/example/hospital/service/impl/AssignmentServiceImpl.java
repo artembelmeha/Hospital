@@ -36,7 +36,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         assignment.setNotes(assignmentDTO.getNotes());
         assignment.setQuantity(assignmentDTO.getQuantity());
         assignment.setType(assignmentDTO.getAssignmentType());
-        assignment.setNurses(assignmentDTO.getNurse());
+        assignment.setNurses(assignmentDTO.getNurses());
         assignmentRepository.save(assignment);
 
     }
@@ -51,13 +51,9 @@ public class AssignmentServiceImpl implements AssignmentService {
         Assignment assignment = assignmentRepository.getAssignmentById(id);
         assignment.setDoneTimes(assignment.getDoneTimes() + 1);     // adding one execution of assignment
         if(assignment.getDoneTimes() == assignment.getQuantity()) {
-            //Update that assignment is completed
-            assignmentRepository.updateDoneTimesAndIsCompleteById(
-                    assignment.getDoneTimes(), 1, id);
-            return;
+            assignment.setComplete(true);
         }
-        //Update assignment doneTimes += 1
-        assignmentRepository.updateDoneTimesAndIsCompleteById(
-                assignment.getDoneTimes(), 0, id);
+        assignmentRepository.save(assignment);
+
     }
 }

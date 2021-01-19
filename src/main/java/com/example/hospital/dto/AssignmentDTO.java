@@ -28,7 +28,7 @@ public class AssignmentDTO {
     private String currentDiagnosis;
     private String notes;
     private  boolean isComplete = false;
-    private Set<User> nurse = new HashSet<>();
+    private Set<User> nurses = new HashSet<>();
 
     public AssignmentDTO(long medicalCardID) {
         this.medicalCardID = medicalCardID;
@@ -45,6 +45,6 @@ public class AssignmentDTO {
         this.currentDiagnosis = assignment.getCurrentDiagnosis();
         this.notes = assignment.getNotes();
         this.isComplete = assignment.isComplete();
-        this.nurse = assignment.getNurses();
+        this.nurses = assignment.getNurses();
     }
 }

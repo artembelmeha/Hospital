@@ -89,6 +89,25 @@
                    th:disabled="${assignmentDto.isComplete}"/>
         </tr>
     </table>
+
+    <br>
+    <h3 th:text="#{nurse.listOfAssignedNurse}+':'">List of Nurse</h3>
+    <table border="1" >
+        <tr>
+            <th th:text="#{list.no}">No.</th>
+            <th th:text="#{list.fullName}">Full name</th>
+            <th th:text="#{login.email}">E-mail</th>
+        </tr>
+
+
+        <tr th:each="user, iStat: ${assignmentDto.nurses}">
+            <td th:text="${iStat.index + 1}" />
+            <td>
+                <a th:text="${user.firstName + ' ' + user.lastName}" />
+            </td>
+            <td th:text="${user.email}"/>
+        </tr>
+    </table>
 </form>
 
 
