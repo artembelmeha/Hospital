@@ -13,34 +13,25 @@
 
     <h2 th:text="#{medicalCard.info}">Medical card info</h2>
     <br>
-<!--    <form th:method="POST" th:action="@{|/users/patients/${#authentication.details.id}|}" th:object="${assignmentDto}"> -->
-<!--        -->
-<!--    </form>-->
     <form class="button" th:action="@{|/assignment/${medicalCardId}|}" method="GET">
         <input type="submit" th:value="#{assignment.createNew}"/>
     </form>
     <br>
-    <table border="1" >
+    <table border="1">
         <tr>
             <th th:text="#{list.no}">No.</th>
             <th th:text="#{medicalCard.currentDiagnosis}">Current Diagnosis</th>
             <th th:text="#{medicalCard.isComplete}">Is Complete</th>
-            <th th:text="#{medicalCard.openAssignment}">Open Assignment</th>
+            <th th:text="#{assignment.action}">Action</th>
 
         </tr>
-        <tr th:each="assignment, iStat: ${assignments}">
-            <td th:text="${iStat.index + 1}" />
-<!--            <td>-->
-<!--                <a th:text="${user.firstName + ' ' + user.lastName}" />-->
-<!--            </td>-->
-<!--            <td th:text="${user.email}"/>-->
-
-<!--            <td>-->
-<!--                <a th:href="@{|/users/patients/${user.id}/info|}" th:text="#{patient.info}">Info</a>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <a th:href="@{|/users/${user.id}/delete|}">Remove</a>-->
-<!--            </td>-->
+        <tr th:each="assignment, iStat: ${medicalCard.assignmentList}">
+            <td th:text="${iStat.index + 1}"/>
+            <td th:text="${assignment.currentDiagnosis}">
+            <td th:text="#{'patient.'+${assignment.isComplete}}">
+            <td>
+                 <a th:href="@{|/assignment/${medicalCardId}/${assignment.id}|}" th:text="#{assignment.open}">Open Assignment</a>
+            </td>
         </tr>
     </table>
 

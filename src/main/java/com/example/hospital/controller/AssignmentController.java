@@ -39,5 +39,11 @@ public class AssignmentController {
          assignmentService.addNewAssignment(assignmentDTO);
         return REDIRECT_TO_MEDICAL_CARD+assignmentDTO.getMedicalCardID();
     }
+    @GetMapping("/{medicalCardID}/{id}")
+    public String viewAssignment(@PathVariable long medicalCardID, @PathVariable long id) {
+
+
+        return PAGE_ASSIGNMENT;
+    }
 
 }
