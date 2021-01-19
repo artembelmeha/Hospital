@@ -50,6 +50,7 @@
                     <input type="text" th:field="*{notes}"/>
                 </td>
             </tr>
+
             <tr>
                 <td>
                     <label th:text="#{assignment.quantity}">Quantity</label>
@@ -58,6 +59,7 @@
                     <input type="text" th:field="*{quantity}"/>
                 </td>
             </tr>
+
             <tr>
                 <td>
                     <label th:text="#{assignment.type}">Type</label>
@@ -70,6 +72,7 @@
                     </select>
                 </td>
             </tr>
+
             <tr>
                 <td>
                     <input type="submit" th:value="#{doctor.add}"/>
@@ -80,6 +83,7 @@
             </tr>
         </table>
             <input type="hidden" th:field="*{medicalCardID}" th:value="*{medicalCardID}"/>
+            <input type="hidden" th:field="*{nurse}" th:value="*{nurse}"/>
     </form>
 </div>
 </body>

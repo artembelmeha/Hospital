@@ -3,13 +3,95 @@
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{assignment.createNew}">List of Users</title>
+    <title th:text="#{assignment.inso}">List of Users</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
           integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
 
 </head>
 <body>
 <div th:replace="header"></div>
+<div class="m-5 p-1">
+<h2 th:text="#{assignment.info}">Assignment Info</h2>
+<br>
+<form th:method="GET" th:action="@{|/assignment/${assignmentDto.medicalCardID}/${assignmentDto.id}/addOne|}"
+      th:object="${assignmentDto}">
+    <table>
+        <tr>
+            <td>
+                <label th:text="#{assignment.currentDiagnosis}">Current Diagnosis</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{currentDiagnosis}" disabled/>
+            </td>
+        </tr>
 
+        <tr>
+            <td>
+                <label th:text="#{assignment.date}">Date</label>
+            </td>
+            <td>
+                <input type="date" th:field="*{date}" disabled>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label th:text="#{assignment.name}">Name assignment</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{name}" disabled/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label th:text="#{assignment.notes}">Notes</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{notes}" disabled/>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label th:text="#{assignment.type}">Type</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{assignmentType}" disabled/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label th:text="#{assignment.isComplete}">Is Complete</label>
+            </td>
+            <td>
+                <input type="text"  th:value="#{'patient.'+${assignmentDto.isComplete}}"disabled/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label th:text="#{assignment.quantity}">Quantity</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{quantity}" disabled/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label th:text="#{assignment.doneTimes}">Done Times</label>
+            </td>
+            <td>
+                <input type="text" th:field="*{doneTimes}" disabled/>
+            </td>
+        </tr>
+        <tr>
+            <td th:colspan="2">
+            <input type="submit" th:value="#{assignment.addOneExecution}"
+                   th:disabled="${assignmentDto.isComplete}"/>
+        </tr>
+    </table>
+</form>
+
+
+</div>
 </body>
 </html>

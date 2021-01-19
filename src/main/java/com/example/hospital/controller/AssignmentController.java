@@ -40,10 +40,16 @@ public class AssignmentController {
         return REDIRECT_TO_MEDICAL_CARD+assignmentDTO.getMedicalCardID();
     }
     @GetMapping("/{medicalCardID}/{id}")
-    public String viewAssignment(@PathVariable long medicalCardID, @PathVariable long id) {
-
-
+    public String viewAssignment(@PathVariable long medicalCardID, @PathVariable long id, Model model) {
+        model.addAttribute(ASSIGNMENT_DTO, new AssignmentDTO(assignmentService.getAssignmentById(id)));
         return PAGE_ASSIGNMENT;
     }
+
+    @GetMapping("/{medicalCardID}/{id}/addOne")
+    public String addOneExecution(@PathVariable long medicalCardID, @PathVariable long id) {
+        assignmentService.addOneExecutionToAssignmentById(id);
+        return REDIRECT_TO_ASSIGNMENT+"/"+medicalCardID+"/"+id;
+    }
+
 
 }

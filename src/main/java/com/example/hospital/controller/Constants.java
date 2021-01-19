@@ -24,6 +24,7 @@ public interface Constants {
 	String REDIRECT_TO_PAGE_HOME = REDIRECT_PREFIX + "/home";
 	String REDIRECT_TO_REGISTRATION = REDIRECT_PREFIX + "/users";
 	String REDIRECT_TO_MEDICAL_CARD = REDIRECT_PREFIX + "/medicalCard/";
+	String REDIRECT_TO_ASSIGNMENT = REDIRECT_PREFIX + "/assignment";
 
 
 
