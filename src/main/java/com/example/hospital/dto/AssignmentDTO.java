@@ -15,8 +15,9 @@ import java.time.LocalDateTime;
 public class AssignmentDTO {
     private long id;
     private long medicalCardID;
-    private AssignmentType type;
+    private AssignmentType assignmentType;
     private String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private int quantity;
     private int doneTimes;

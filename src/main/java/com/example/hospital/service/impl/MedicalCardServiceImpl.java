@@ -22,7 +22,7 @@ public class MedicalCardServiceImpl implements MedicalCardService {
     private MedicalCardRepository medicalCardRepository;
 
     @Override
-    public Optional<MedicalCard> getCardById(Long id) {
+    public MedicalCard getCardById(Long id) {
         return medicalCardRepository.findMedicalCardById(id); //todo: add Exception
     }
 }

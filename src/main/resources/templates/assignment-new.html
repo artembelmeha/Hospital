@@ -64,9 +64,9 @@
                 </td>
                 <td>
                     <select name="assignmentType">
-                        <option th:each="type : ${T(com.example.hospital.model.AssignmentType).values()}"
-                                th:value="${type}"
-                                th:text="#{'type.'+${type.name().toLowerCase()}}"/>
+                        <option th:each="assignmentType : ${T(com.example.hospital.model.AssignmentType).values()}"
+                                th:value="${assignmentType}"
+                                th:text="#{'type.'+${assignmentType.name().toLowerCase()}}"/>
                     </select>
                 </td>
             </tr>

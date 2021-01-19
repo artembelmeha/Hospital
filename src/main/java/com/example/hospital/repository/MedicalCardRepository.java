@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface MedicalCardRepository extends JpaRepository<MedicalCard, Long> {
 
-    Optional<MedicalCard> findMedicalCardById(long id);
+    MedicalCard findMedicalCardById(long id);
 }

@@ -5,5 +5,5 @@ import com.example.hospital.model.MedicalCard;
 import java.util.Optional;
 
 public interface MedicalCardService {
-    Optional<MedicalCard> getCardById(Long id);
+    MedicalCard getCardById(Long id);
 }
