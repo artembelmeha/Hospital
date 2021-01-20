@@ -21,15 +21,16 @@ public class AssignmentController {
     private static final Logger LOGGER  = getLogger(AssignmentController.class);
 
     private final AssignmentService assignmentService;
+    private final UserService userService;
 
     @Autowired
-    public AssignmentController(AssignmentService assignmentService) {
+    public AssignmentController(AssignmentService assignmentService, UserService userService) {
         this.assignmentService = assignmentService;
+        this.userService = userService;
     }
 
     @GetMapping("/{medicalCardID}")
     public String newAssignment(@PathVariable long medicalCardID, Model model) {
-        AssignmentDTO ass =new AssignmentDTO(medicalCardID);
         model.addAttribute(ASSIGNMENT_DTO, new AssignmentDTO(medicalCardID));
         return PAGE_ASSIGNMENT_NEW;
     }
@@ -41,7 +42,9 @@ public class AssignmentController {
     }
     @GetMapping("/{medicalCardID}/{id}")
     public String viewAssignment(@PathVariable long medicalCardID, @PathVariable long id, Model model) {
-        model.addAttribute(ASSIGNMENT_DTO, new AssignmentDTO(assignmentService.getAssignmentById(id)));
+        AssignmentDTO assignmentDTO = new AssignmentDTO(assignmentService.getAssignmentById(id));
+        model.addAttribute(ASSIGNMENT_DTO, assignmentDTO);
+        model.addAttribute(USERS, userService.getAvailableNurse(assignmentDTO.getNurses()));
         return PAGE_ASSIGNMENT;
     }
 
@@ -51,5 +54,11 @@ public class AssignmentController {
         return REDIRECT_TO_ASSIGNMENT+"/"+medicalCardID+"/"+id;
     }
 
+    @GetMapping("/nurse/{assignmentId}/{id}")
+    public String assignNurseToAssignment(@PathVariable long id, @PathVariable long assignmentId) {
+        System.out.println(id);
+        assignmentService.addNurseByIdToAssignment(id,assignmentId);
+        return REDIRECT_TO_ASSIGNMENT+"/"+id;
+    }
 
 }

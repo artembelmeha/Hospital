@@ -11,4 +11,5 @@ public interface AssignmentService {
 
     void addOneExecutionToAssignmentById(long id);
 
+    void addNurseByIdToAssignment(long nurseId, long assignmentId);
 }

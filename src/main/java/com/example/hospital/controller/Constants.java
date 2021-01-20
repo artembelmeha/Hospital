@@ -32,6 +32,7 @@ public interface Constants {
 	String INDEX_PAGE = "index";
 
 	String USERS = "users";
+	String ID = "id";
 	String USER = "user";
 	String MEDICAL_CARD_ID = "medicalCardId";
 	String ASSIGNMENTS = "assignments";

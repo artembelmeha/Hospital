@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService extends UserDetailsService {
 
@@ -33,5 +34,7 @@ public interface UserService extends UserDetailsService {
     User patientDtoToUsers(PatientDTO patientDTO);
 
     User getUserById(long id);
+
+    Set<User> getAvailableNurse(Set<User> busyNurse);
 }
 

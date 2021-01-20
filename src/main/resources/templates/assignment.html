@@ -11,105 +11,127 @@
 <body>
 <div th:replace="header"></div>
 <div class="m-5 p-1">
-<h2 th:text="#{assignment.info}">Assignment Info</h2>
-<br>
-<form th:method="GET" th:action="@{|/assignment/${assignmentDto.medicalCardID}/${assignmentDto.id}/addOne|}"
-      th:object="${assignmentDto}">
-    <table>
-        <tr>
-            <td>
-                <label th:text="#{assignment.currentDiagnosis}">Current Diagnosis</label>
-            </td>
-            <td>
-                <input type="text" th:field="*{currentDiagnosis}" disabled/>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <label th:text="#{assignment.date}">Date</label>
-            </td>
-            <td>
-                <input type="date" th:field="*{date}" disabled>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <label th:text="#{assignment.name}">Name assignment</label>
-            </td>
-            <td>
-                <input type="text" th:field="*{name}" disabled/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label th:text="#{assignment.notes}">Notes</label>
-            </td>
-            <td>
-                <input type="text" th:field="*{notes}" disabled/>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <label th:text="#{assignment.type}">Type</label>
-            </td>
-            <td>
-                <input type="text" th:field="*{assignmentType}" disabled/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label th:text="#{assignment.isComplete}">Is Complete</label>
-            </td>
-            <td>
-                <input type="text"  th:value="#{'patient.'+${assignmentDto.isComplete}}"disabled/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label th:text="#{assignment.quantity}">Quantity</label>
-            </td>
-            <td>
-                <input type="text" th:field="*{quantity}" disabled/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label th:text="#{assignment.doneTimes}">Done Times</label>
-            </td>
-            <td>
-                <input type="text" th:field="*{doneTimes}" disabled/>
-            </td>
-        </tr>
-        <tr>
-            <td th:colspan="2">
-            <input type="submit" th:value="#{assignment.addOneExecution}"
-                   th:disabled="${assignmentDto.isComplete}"/>
-        </tr>
-    </table>
-
+    <h2 th:text="#{assignment.info}">Assignment Info</h2>
     <br>
-    <h3 th:text="#{nurse.listOfAssignedNurse}+':'">List of Nurse</h3>
-    <table border="1" >
-        <tr>
-            <th th:text="#{list.no}">No.</th>
-            <th th:text="#{list.fullName}">Full name</th>
-            <th th:text="#{login.email}">E-mail</th>
-        </tr>
+    <form th:method="GET" th:action="@{|/assignment/${assignmentDto.medicalCardID}/${assignmentDto.id}/addOne|}"
+          th:object="${assignmentDto}">
+        <table>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.currentDiagnosis}">Current Diagnosis</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{currentDiagnosis}" disabled/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label th:text="#{assignment.date}">Date</label>
+                </td>
+                <td>
+                    <input type="date" th:field="*{date}" disabled>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label th:text="#{assignment.name}">Name assignment</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{name}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.notes}">Notes</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{notes}" disabled/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label th:text="#{assignment.type}">Type</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{assignmentType}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.isComplete}">Is Complete</label>
+                </td>
+                <td>
+                    <input type="text" th:value="#{'patient.'+${assignmentDto.isComplete}}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.quantity}">Quantity</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{quantity}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label th:text="#{assignment.doneTimes}">Done Times</label>
+                </td>
+                <td>
+                    <input type="text" th:field="*{doneTimes}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td th:colspan="2">
+                    <input type="submit" th:value="#{assignment.addOneExecution}"
+                           th:disabled="${assignmentDto.isComplete}"/>
+            </tr>
+        </table>
 
 
-        <tr th:each="user, iStat: ${assignmentDto.nurses}">
-            <td th:text="${iStat.index + 1}" />
-            <td>
-                <a th:text="${user.firstName + ' ' + user.lastName}" />
-            </td>
-            <td th:text="${user.email}"/>
-        </tr>
-    </table>
-</form>
 
+
+    </form>
+        <div class="m-1 p-1">
+        <br>
+        <h3 th:text="#{nurse.listOfAssignedNurse}+':'">List of Nurse</h3>
+        <table border="1">
+            <tr>
+                <th th:text="#{list.no}">No.</th>
+                <th th:text="#{list.fullName}">Full name</th>
+                <th th:text="#{login.email}">E-mail</th>
+            </tr>
+            <tr th:each="user, iStat: ${assignmentDto.nurses}">
+                <td th:text="${iStat.index + 1}"/>
+                <td>
+                    <a th:text="${user.firstName + ' ' + user.lastName}"/>
+                </td>
+                <td th:text="${user.email}"/>
+            </tr>
+        </table>
+<p></p>
+            <h3 th:text="#{assignment.addNurse}+':'">Assign nurse</h3>
+        <table border="1">
+            <tr>
+                <th th:text="#{list.no}">No.</th>
+                <th th:text="#{list.fullName}">Full name</th>
+                <th th:text="#{assignment.assign}">Assign</th>
+            </tr>
+            <tr th:each="user, iStat: ${users}">
+                <td th:text="${iStat.index + 1}"/>
+                <td>
+                    <a th:text="${user.firstName + ' ' + user.lastName}"/>
+                </td>
+                <td>
+                    <a th:href="@{|/assignment/nurse/${assignmentDto.id}/${user.id}|}" th:text="#{doctor.add}">Add</a>
+                </td>
+            </tr>
+        </table>
+
+
+</div>
 
 </div>
 </body>

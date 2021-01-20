@@ -23,9 +23,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Component
@@ -141,5 +139,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(long id) {
         return userRepository.getUserById(id);
+    }
+
+    @Override
+    public Set<User> getAvailableNurse(Set<User> busyNurse) {
+        Set<User> result = new HashSet<>(getUsersByRole(NURSE));
+        result.removeAll(busyNurse);
+        return result;
     }
 }

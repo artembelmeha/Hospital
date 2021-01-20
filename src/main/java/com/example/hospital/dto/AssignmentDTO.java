@@ -5,6 +5,7 @@ import com.example.hospital.model.AssignmentType;
 import com.example.hospital.model.MedicalCard;
 import com.example.hospital.model.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @ToString
 public class AssignmentDTO {
     private long id;
@@ -29,6 +31,7 @@ public class AssignmentDTO {
     private String notes;
     private  boolean isComplete = false;
     private Set<User> nurses = new HashSet<>();
+
 
     public AssignmentDTO(long medicalCardID) {
         this.medicalCardID = medicalCardID;

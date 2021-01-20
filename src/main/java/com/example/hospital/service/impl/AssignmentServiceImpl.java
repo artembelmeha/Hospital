@@ -2,8 +2,10 @@ package com.example.hospital.service.impl;
 
 import com.example.hospital.dto.AssignmentDTO;
 import com.example.hospital.model.Assignment;
+import com.example.hospital.model.User;
 import com.example.hospital.repository.AssignmentRepository;
 import com.example.hospital.repository.MedicalCardRepository;
+import com.example.hospital.repository.UserRepository;
 import com.example.hospital.service.AssignmentService;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -22,6 +25,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     private AssignmentRepository assignmentRepository;
     @Resource
     private MedicalCardRepository medicalCardRepository;
+    @Resource
+    private UserRepository userRepository;
+
 
     @Override
     public void addNewAssignment(AssignmentDTO assignmentDTO) {
@@ -49,11 +55,17 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public void addOneExecutionToAssignmentById(long id) {
         Assignment assignment = assignmentRepository.getAssignmentById(id);
-        assignment.setDoneTimes(assignment.getDoneTimes() + 1);     // adding one execution of assignment
+        assignment.setDoneTimes(assignment.getDoneTimes() + 1);
         if(assignment.getDoneTimes() == assignment.getQuantity()) {
             assignment.setComplete(true);
         }
         assignmentRepository.save(assignment);
+    }
 
+    @Override
+    public void addNurseByIdToAssignment(long nurseId, long assignmentId) {
+        Assignment assignment = assignmentRepository.getAssignmentById(assignmentId);
+        assignment.getNurses().add(userRepository.getUserById(nurseId));
+        assignmentRepository.save(assignment);
     }
 }
