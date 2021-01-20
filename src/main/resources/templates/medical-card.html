@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
@@ -13,8 +14,9 @@
 
     <h2 th:text="#{medicalCard.info}">Medical card info</h2>
     <br>
-    <form class="button" th:action="@{|/assignment/${medicalCardId}|}" method="GET">
-        <input type="submit" th:value="#{assignment.createNew}"/>
+    <form class="button" th:action="@{|/assignment/${medicalCard.id}|}" method="GET"
+          sec:authorize="hasAuthority('DOCTOR')">
+        <input type="submit" th:value="#{assignment.createNew}" />
     </form>
     <br>
     <table border="1">
@@ -30,7 +32,7 @@
             <td th:text="${assignment.currentDiagnosis}">
             <td th:text="#{'patient.'+${assignment.isComplete}}">
             <td>
-                 <a th:href="@{|/assignment/${medicalCardId}/${assignment.id}|}" th:text="#{assignment.open}">Open Assignment</a>
+                 <a th:href="@{|/assignment/view/${assignment.id}|}" th:text="#{assignment.open}">Open Assignment</a>
             </td>
         </tr>
     </table>

@@ -40,25 +40,25 @@ public class AssignmentController {
          assignmentService.addNewAssignment(assignmentDTO);
         return REDIRECT_TO_MEDICAL_CARD+assignmentDTO.getMedicalCardID();
     }
-    @GetMapping("/{medicalCardID}/{id}")
-    public String viewAssignment(@PathVariable long medicalCardID, @PathVariable long id, Model model) {
+    @GetMapping("/view/{id}")
+    public String viewAssignment(@PathVariable long id, Model model) {
         AssignmentDTO assignmentDTO = new AssignmentDTO(assignmentService.getAssignmentById(id));
         model.addAttribute(ASSIGNMENT_DTO, assignmentDTO);
         model.addAttribute(USERS, userService.getAvailableNurse(assignmentDTO.getNurses()));
         return PAGE_ASSIGNMENT;
     }
 
-    @GetMapping("/{medicalCardID}/{id}/addOne")
-    public String addOneExecution(@PathVariable long medicalCardID, @PathVariable long id) {
+    @GetMapping("/{id}/addOne")
+    public String addOneExecution(@PathVariable long id) {
         assignmentService.addOneExecutionToAssignmentById(id);
-        return REDIRECT_TO_ASSIGNMENT+"/"+medicalCardID+"/"+id;
+        return REDIRECT_TO_ASSIGNMENT+"/view/"+id;
     }
 
     @GetMapping("/nurse/{assignmentId}/{id}")
     public String assignNurseToAssignment(@PathVariable long id, @PathVariable long assignmentId) {
         System.out.println(id);
         assignmentService.addNurseByIdToAssignment(id,assignmentId);
-        return REDIRECT_TO_ASSIGNMENT+"/"+id;
+        return REDIRECT_TO_ASSIGNMENT+"/view/"+assignmentId;
     }
 
 }

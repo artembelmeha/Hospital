@@ -28,7 +28,7 @@ public class MedicalCardController {
     public String openMedicalCard(@PathVariable long id, Model model) {
         model.addAttribute(MEDICAL_CARD, medicalCardService.getCardById(id));
       //  model.addAttribute(ASSIGNMENT_DTO, medicalCardService.getCardById(id));//??????
-        model.addAttribute(MEDICAL_CARD_ID, id);
+//        model.addAttribute(MEDICAL_CARD_ID, id);
         return PAGE_MEDICAL_CARD;
     }
 }

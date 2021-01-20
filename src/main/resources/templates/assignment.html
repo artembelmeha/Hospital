@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +14,7 @@
 <div class="m-5 p-1">
     <h2 th:text="#{assignment.info}">Assignment Info</h2>
     <br>
-    <form th:method="GET" th:action="@{|/assignment/${assignmentDto.medicalCardID}/${assignmentDto.id}/addOne|}"
+    <form th:method="GET" th:action="@{|/assignment/${assignmentDto.id}/addOne|}"
           th:object="${assignmentDto}">
         <table>
             <tr>
@@ -84,9 +85,12 @@
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2">
-                    <input type="submit" th:value="#{assignment.addOneExecution}"
-                           th:disabled="${assignmentDto.isComplete}"/>
+                <div sec:authorize="hasAnyAuthority('DOCTOR','NURSE')">
+                    <td th:colspan="2">
+                        <input class="addDone" type="submit" th:value="#{assignment.addOneExecution}"
+                             th:disabled="${assignmentDto.isComplete}">
+                    </td>
+                </div>
             </tr>
         </table>
 
@@ -112,8 +116,8 @@
             </tr>
         </table>
 <p></p>
-            <h3 th:text="#{assignment.addNurse}+':'">Assign nurse</h3>
-        <table border="1">
+            <h3 th:text="#{assignment.addNurse}+':'"  sec:authorize="hasRole('DOCTOR')">Assign nurse</h3>
+        <table border="1" sec:authorize="hasRole('DOCTOR')">
             <tr>
                 <th th:text="#{list.no}">No.</th>
                 <th th:text="#{list.fullName}">Full name</th>
