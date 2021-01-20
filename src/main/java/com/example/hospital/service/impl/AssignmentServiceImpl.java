@@ -58,6 +58,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         assignment.setDoneTimes(assignment.getDoneTimes() + 1);
         if(assignment.getDoneTimes() == assignment.getQuantity()) {
             assignment.setComplete(true);
+            assignment.setNurses(new HashSet<>());
         }
         assignmentRepository.save(assignment);
     }

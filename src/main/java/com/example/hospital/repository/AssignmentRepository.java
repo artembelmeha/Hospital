@@ -13,10 +13,5 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 
     Assignment getAssignmentById(long id);
 
-    @Transactional
-    @Modifying
-    @Query(value ="UPDATE assignment SET assignment.done_times =?1, " +
-            " assignment.is_complete =?2 WHERE assignment.id =?3", nativeQuery = true)
-    void updateDoneTimesAndIsCompleteById(int doteTimes, int isComplete, long id);
 
 }

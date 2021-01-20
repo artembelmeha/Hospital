@@ -24,5 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "join assignment a on a.id = an.assignment_id where an.nurse_id = ?1)", nativeQuery = true)
     List<User> getUsersByNurseId(long id);
 
-
+    @Query(value = "SELECT * FROM users WHERE card_id = ?1", nativeQuery = true)
+    User getUserByMedicalCardId(long id);
 }

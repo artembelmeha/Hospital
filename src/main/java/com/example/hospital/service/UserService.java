@@ -36,5 +36,6 @@ public interface UserService extends UserDetailsService {
     User getUserById(long id);
 
     Set<User> getAvailableNurse(Set<User> busyNurse);
+
 }
 

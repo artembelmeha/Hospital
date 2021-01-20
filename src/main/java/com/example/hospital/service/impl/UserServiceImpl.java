@@ -147,4 +147,5 @@ public class UserServiceImpl implements UserService {
         result.removeAll(busyNurse);
         return result;
     }
+
 }
