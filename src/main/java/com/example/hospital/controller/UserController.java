@@ -6,6 +6,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import javax.validation.Valid;
 
+import com.example.hospital.dto.DoctorDto;
 import com.example.hospital.dto.PatientDTO;
 import com.example.hospital.dto.PatientInfoDto;
 import org.slf4j.Logger;
@@ -70,18 +71,18 @@ public class UserController {
 
     @GetMapping("/nurses")
     public String getAllNurses(Model model) {
-        model.addAttribute(USERS, userService.getUsersByRole(NURSE)); //todo: nurseDTO
+        model.addAttribute(USERS, userService.getUsersByRole(NURSE));
         return PAGE_NURSES;
     }
 
     @GetMapping("/doctors/{id}")
     public String setAsDoctor(@PathVariable long id, Model model) {
-        model.addAttribute(USER, userService.findById(id)); //todo: doctorDTO
+        model.addAttribute(USER, new DoctorDto(userService.findById(id)));
         return PAGE_DOCTOR_REGISTRATION;
     }
 
     @PostMapping("/doctors/{id}")
-    public String setDoctorQualification(@PathVariable long id, @ModelAttribute User user) {
+    public String setDoctorQualification(@PathVariable long id, @ModelAttribute DoctorDto user) {
         userService.setDoctorQualification(id, user.getQualification());
         return REDIRECT_TO_PAGE_DOCTORS;
     }
