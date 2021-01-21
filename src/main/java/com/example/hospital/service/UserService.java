@@ -1,6 +1,7 @@
 package com.example.hospital.service;
 
 import com.example.hospital.dto.PatientDTO;
+import com.example.hospital.dto.RegistrationUserDto;
 import com.example.hospital.model.Qualification;
 import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 public interface UserService extends UserDetailsService {
 
-    User create(User user);
+    User create(RegistrationUserDto user);
 
     User findById(long id);
 

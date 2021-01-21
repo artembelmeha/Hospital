@@ -3,6 +3,7 @@ package com.example.hospital.service.impl;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.example.hospital.dto.PatientDTO;
+import com.example.hospital.dto.RegistrationUserDto;
 import com.example.hospital.exception.NullEntityReferenceException;
 import com.example.hospital.model.MedicalCard;
 import com.example.hospital.model.Qualification;
@@ -17,8 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import org.slf4j.Logger;
-import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -34,7 +33,14 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User create(User user) {
+    public User create(RegistrationUserDto registrationUser) {
+        User user = new User();
+        user.setPassword(registrationUser.getPassword());
+        user.setRole(UNDEFINE);
+        user.setEmail(registrationUser.getEmail());
+        user.setLastName(registrationUser.getLastName());
+        user.setFirstName(registrationUser.getFirstName());
+        user.setOnTreatment(false);
         try {
             return userRepository.save(user);
         } catch (IllegalArgumentException e) {
@@ -97,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         User user = userRepository.getUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not Found!");

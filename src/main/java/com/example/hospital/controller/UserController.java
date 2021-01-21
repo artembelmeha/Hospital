@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.example.hospital.dto.DoctorDto;
 import com.example.hospital.dto.PatientDTO;
 import com.example.hospital.dto.PatientInfoDto;
+import com.example.hospital.dto.RegistrationUserDto;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 
 @Controller
@@ -38,13 +37,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     @GetMapping()
     public String register(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute(USER, new RegistrationUserDto());
         return PAGE_REGISTRATION;
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     @PostMapping()
-    public String create(@ModelAttribute("user")  @Valid User user,
+    public String create(@ModelAttribute("user")  @Valid RegistrationUserDto user,
                          BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
             LOGGER.error("Error during binding user.");
@@ -52,7 +51,6 @@ public class UserController {
             return PAGE_REGISTRATION;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(UNDEFINE);
         userService.create(user);
         return REDIRECT_PREFIX;
     }
