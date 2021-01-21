@@ -2,14 +2,12 @@ package com.example.hospital.dto;
 
 import com.example.hospital.model.Assignment;
 import com.example.hospital.model.AssignmentType;
-import com.example.hospital.model.MedicalCard;
 import com.example.hospital.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;

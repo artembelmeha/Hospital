@@ -1,8 +1,6 @@
 package com.example.hospital.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -21,7 +19,6 @@ public class MedicalCard {
 
     @OneToOne(mappedBy = "medicalCard")
     private User user;
-
 
     @Column(name = "final_diagnosis")
     private String finalDiagnosis;

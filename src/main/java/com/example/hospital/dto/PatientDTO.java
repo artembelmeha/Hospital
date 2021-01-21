@@ -3,10 +3,8 @@ package com.example.hospital.dto;
 import com.example.hospital.model.*;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Pattern;
-import java.time.LocalDateTime;
 
 
 @Data

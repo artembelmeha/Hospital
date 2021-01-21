@@ -56,7 +56,6 @@ public class AssignmentController {
 
     @GetMapping("/nurse/{assignmentId}/{id}")
     public String assignNurseToAssignment(@PathVariable long id, @PathVariable long assignmentId) {
-        System.out.println(id);
         assignmentService.addNurseByIdToAssignment(id,assignmentId);
         return REDIRECT_TO_ASSIGNMENT+"/view/"+assignmentId;
     }

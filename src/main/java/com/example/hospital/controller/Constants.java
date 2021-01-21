@@ -17,7 +17,7 @@ public interface Constants {
 	String PAGE_PATIENT_REGISTRATION = "patient-registration";
 	String PAGE_PATIENT_INFO = "patient-info";
 
-	String REDIRECT_TO_PAGE_NURSES = REDIRECT_PREFIX + "/users/nurses";;
+	String REDIRECT_TO_PAGE_NURSES = REDIRECT_PREFIX + "/users/nurses";
 	String REDIRECT_TO_PAGE_DOCTORS = REDIRECT_PREFIX + "/users/doctors";
 	String REDIRECT_TO_PAGE_PATIENTS_OF = REDIRECT_PREFIX + "/users/patients/of/";
 	String REDIRECT_TO_PAGE_PATIENTS = REDIRECT_PREFIX + "/users/patients/";

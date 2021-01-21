@@ -1,6 +1,5 @@
 package com.example.hospital.controller;
 
-import com.example.hospital.service.AssignmentService;
 import com.example.hospital.service.MedicalCardService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

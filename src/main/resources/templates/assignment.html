@@ -116,8 +116,8 @@
             </tr>
         </table>
 <p></p>
-            <h3 th:text="#{assignment.addNurse}+':'"  sec:authorize="hasRole('DOCTOR')">Assign nurse</h3>
-        <table border="1" sec:authorize="hasRole('DOCTOR')">
+            <h3 th:text="#{assignment.addNurse}+':'"  sec:authorize="hasAuthority('DOCTOR')">Assign nurse</h3>
+        <table border="1" sec:authorize="hasAuthority('DOCTOR')">
             <tr>
                 <th th:text="#{list.no}">No.</th>
                 <th th:text="#{list.fullName}">Full name</th>
