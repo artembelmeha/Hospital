@@ -113,18 +113,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getPatientsByEmployeesId(long id) {
+    public Page<User> getPatientsByEmployeesId(long id,int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         User user = userRepository.getUserById(id);
         if(user.getRole().equals(ADMIN)) {
-            return userRepository.getUsersByRoleEquals(PATIENT);
+            return userRepository.findAllByRole(PATIENT, pageable);
         }
         if(user.getRole().equals(DOCTOR)) {
-            return userRepository.getUserByDoctor(user);
+            return userRepository.getUserByDoctor(user, pageable);
         }
         if(user.getRole().equals(NURSE)) {
-            return userRepository.getUsersByNurseId(id);  ///
+            return userRepository.getUsersByNurseId(id, pageable);
         }
-        return new ArrayList<>();
+        return new PageImpl<User>(null);
     }
 
     @Override

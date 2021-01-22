@@ -110,11 +110,27 @@ public class UserController {
         return REDIRECT_TO_PAGE_PATIENTS_OF+id;
     }
 
-    @GetMapping("/patients/of/{id}")
-    public String getAllPatients(@PathVariable long id, Model model) {
-        model.addAttribute(USERS, userService.getPatientsByEmployeesId(id));
+    @GetMapping("/patients/of/{id}/{pageNo}")
+    public String getAllPatients(@PathVariable long id,
+                                 @PathVariable int pageNo,
+                                 @RequestParam String sortField,
+                                 @RequestParam String sortDir,
+                                 Model model) {
+        int pageSize = PAGN_NOTE_PER_PAGE;
+        Page<User> page = userService.getPatientsByEmployeesId(id,pageNo,pageSize, sortField, sortDir);
+        List<User> listUser = page.getContent();
+        model.addAttribute(PAGN_CURRENT_PAGE, pageNo);
+        model.addAttribute(PAGN_TOTAL_PAGES, page.getTotalPages());
+        model.addAttribute(PAGN_TOTAL_USER, page.getTotalElements());
+        model.addAttribute(PAGN_SORT_FIELD, sortField);
+        model.addAttribute(PAGN_SORT_DIRECTION, sortDir);
+        model.addAttribute(PAGN_REVERSE_SORT_DIR,
+                sortDir.equals(PAGN_ASC) ? PAGN_DESC : PAGN_ASC);
+        model.addAttribute(USERS, listUser);
         return PAGE_PATIENTS;
     }
+
+
     @GetMapping("/patients/{id}/info")
     public String getPatientInfo(@PathVariable long id, Model model) {
         model.addAttribute(PATIENT_INFO_DTO, new PatientInfoDto(userService.getUserById(id)));

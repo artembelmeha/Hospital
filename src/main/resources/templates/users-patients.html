@@ -17,25 +17,34 @@
     <br>
     <table border="1" class = "table table-striped table-responsive-md">
         <tr>
-            <th th:text="#{list.no}">No.</th>
-            <th th:text="#{list.fullName}">Full name</th>
+        <thead>
+            <th >
+                <a th:text="#{login.firstName}"
+                   th:href="@{'/users/patients/of/'+${#authentication.details.id}+'/'+${currentPage}+'?sortField=firstName&sortDir='+${reverseSortDir}}"/>
+            </th>
+            <th>
+                <a th:text="#{login.lastName}"
+                   th:href="@{'/users/patients/of/'+${#authentication.details.id}+'/'+${currentPage}+'?sortField=lastName&sortDir='+${reverseSortDir}}"/>
+            </th>
+            <th>
+                <a th:text="#{patient.birthDate}"
+                   th:href="@{'/users/patients/of/'+${#authentication.details.id}+'/'+${currentPage}+'?sortField=birthDate&sortDir='+${reverseSortDir}}"/>
+            </th>
             <th th:text="#{login.email}">E-mail</th>
-
-            <th colspan="2" th:text="#{list.operations}">Operations</th>
+            <th th:text="#{list.operations}">Operations</th>
         </tr>
-        <tr th:each="user, iStat: ${users}">
-            <td th:text="${iStat.index + 1}" />
-            <td>
-                <a th:text="${user.firstName + ' ' + user.lastName}" />
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${#temporals.format(user.birthDate, 'dd.MM.yyyy')}">
             </td>
-            <td th:text="${user.email}"/>
-
+            <td th:text="${user.email}"></td>
             <td>
                 <a th:href="@{|/users/patients/${user.id}/info|}" th:text="#{patient.info}">Info</a>
             </td>
-            <td>
-                <a th:href="@{|/users/${user.id}/delete|}">Remove</a>
-            </td>
+        </tbody>
         </tr>
     </table>
 </div>

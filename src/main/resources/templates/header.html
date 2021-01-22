@@ -11,7 +11,10 @@
                 </li>
 
                 <li sec:authorize="hasAnyAuthority('ADMIN','DOCTOR','NURSE')">
-                    <a th:href="@{|/users/patients/of/${#authentication.details.id}|}" th:text="#{login.patients}">Patients</a>
+                    <a
+                   th:href="@{'/users/patients/of/'+${#authentication.details.id}+'/1?sortField=firstName&sortDir=asc'}"
+                       th:text="#{login.patients}">Patients</a>
+<!--                            th:href="@{|'/users/doctors/page/1?sortField=firstName&sortDir=asc'/users/patients/of/${#authentication.details.id}|}"-->
                 </li>
 
             </ul>

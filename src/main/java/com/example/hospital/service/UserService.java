@@ -27,7 +27,7 @@ public interface UserService extends UserDetailsService {
 
     List<User> getUsersByRole(Role role);
 
-    List<User> getPatientsByEmployeesId(long id);
+    Page<User> getPatientsByEmployeesId(long id,int pageNo, int pageSize, String sortField, String sortDirection);
 
     void setDoctorQualification(long id, Qualification qualification);
 
