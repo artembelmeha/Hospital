@@ -21,6 +21,7 @@ public interface Constants {
 	String PAGN_TOTAL_USER = "totalUser";
 	String PAGN_SORT_FIELD = "sortField";
 	String PAGN_SORT_DIRECTION = "sortDirection";
+	String PAGENATION_SORT_BY_DEFAULT = "/1/?sortField=firstName&sortDir=asc";
 
 	String PAGE_DOCTOR_REGISTRATION = "doctor-registration";
 	String PAGE_PATIENT_REGISTRATION = "patient-registration";
@@ -34,8 +35,6 @@ public interface Constants {
 	String REDIRECT_TO_REGISTRATION = REDIRECT_PREFIX + "/users";
 	String REDIRECT_TO_MEDICAL_CARD = REDIRECT_PREFIX + "/medicalCard/";
 	String REDIRECT_TO_ASSIGNMENT = REDIRECT_PREFIX + "/assignment";
-
-
 
 
 	String INDEX_PAGE = "index";

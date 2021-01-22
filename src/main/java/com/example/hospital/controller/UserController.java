@@ -4,6 +4,7 @@ import static com.example.hospital.controller.Constants.*;
 import static com.example.hospital.model.Role.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import com.example.hospital.dto.DoctorDto;
@@ -109,7 +110,7 @@ public class UserController {
     public String setPatient(@PathVariable long id,
                              @ModelAttribute("patientDTO") PatientDTO patientDTO) {
         userService.patientDtoToUsers(patientDTO);
-        return REDIRECT_TO_PAGE_PATIENTS_OF + id;
+        return REDIRECT_TO_PAGE_PATIENTS_OF + id+PAGENATION_SORT_BY_DEFAULT;
     }
 
     @GetMapping("/patients/of/{id}/{pageNo}")

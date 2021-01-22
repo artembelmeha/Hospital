@@ -8,7 +8,7 @@
           integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
 
 </head>
-<body>
+<body style ="background: #eee;" >
 <div th:replace="header"></div>
 
 <div class="m-5 p-1">
@@ -50,7 +50,7 @@
     </table>
     <div th:if="${totalPages > 1}">
         <div class="row col-sm-10">
-            <div class="col-sm-2">
+            <div class="col-sm-2" th:text="#{form.totalRows}+' '+${totalPages}">
                 Total Rows: [[${totalUser}]]
             </div>
             <div class="col-sm-1">
@@ -63,14 +63,14 @@
             </div>
             <div class="col-sm-1">
                 <a th:if="${currentPage < totalPages}"
-                   th:href="@{'/users/doctors/page/'+${totalPages}+'?sortField='+${sortField}+'&sortDir='+${sortDirection}}">Next</a>
-                <span th:unless="${currentPage < totalPages}">Next</span>
+                   th:href="@{'/users/doctors/page/'+${totalPages}+'?sortField='+${sortField}+'&sortDir='+${sortDirection}}" th:text="#{form.next}">Next</a>
+                <span th:unless="${currentPage < totalPages}" th:text="#{form.next}">Next</span>
             </div>
 
             <div class="col-sm-1">
                 <a th:if="${currentPage < totalPages}"
-                   th:href="@{'/users/doctors/page/'+${totalPages}+'?sortField='+${sortField}+'&sortDir='+${sortDirection}}">Last</a>
-                <span th:unless="${currentPage < totalPages}">Last</span>
+                   th:href="@{'/users/doctors/page/'+${totalPages}+'?sortField='+${sortField}+'&sortDir='+${sortDirection}}" th:text="#{form.last}">Last</a>
+                <span th:unless="${currentPage < totalPages}" th:text="#{form.last}">Last</span>
             </div>
         </div>
     </div>

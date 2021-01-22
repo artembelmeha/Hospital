@@ -31,7 +31,6 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public void addNewAssignment(AssignmentDTO assignmentDTO) {
-        System.out.println(assignmentDTO);
         Assignment assignment = new Assignment();
         assignment.setComplete(false);
         assignment.setCurrentDiagnosis(assignmentDTO.getCurrentDiagnosis());
@@ -55,7 +54,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public void addOneExecutionToAssignmentById(long id) {
         Assignment assignment = assignmentRepository.getAssignmentById(id);
-        assignment.setDoneTimes(assignment.getDoneTimes() + 1);
+        assignment.setDoneTimes(assignment.getDoneTimes() + 1); //todo
         if(assignment.getDoneTimes() == assignment.getQuantity()) {
             assignment.setComplete(true);
             assignment.setNurses(new HashSet<>());
