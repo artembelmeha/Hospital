@@ -127,9 +127,8 @@ public class UserController {
                                  @RequestParam String sortDir,
                                  Model model) {
         int pageSize = PAGN_NOTE_PER_PAGE;
-        Page<User> page = userService.findPaginatedUser(pageNo,pageSize, sortField, sortDir);
+        Page<User> page = userService.findPaginatedUser(pageNo,pageSize, sortField, sortDir, DOCTOR);
         List<User> listUser = page.getContent();
-
         model.addAttribute(PAGN_CURRENT_PAGE, pageNo);
         model.addAttribute(PAGN_TOTAL_PAGES, page.getTotalPages());
         model.addAttribute(PAGN_TOTAL_USER, page.getTotalElements());

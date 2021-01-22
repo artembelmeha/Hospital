@@ -39,7 +39,7 @@ public interface UserService extends UserDetailsService {
 
     Set<User> getAvailableNurse(Set<User> busyNurse);
 
-    Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection);
+    Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection, Role role);
 
 }
 

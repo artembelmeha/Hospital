@@ -156,22 +156,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection) {
+    public Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection, Role role) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-
-
-        List<User> listUser = userRepository.getUsersByRoleEquals(DOCTOR);
-
-
-
-
-        Page<User> page = new PageImpl<>(listUser, pageable, listUser.size());
-//        return userRepository.findAll(pageable);
-//        return page
-        return userRepository.findAllByRole(DOCTOR, pageable);
+        return userRepository.findAllByRole(role, pageable);
     }
 
 
