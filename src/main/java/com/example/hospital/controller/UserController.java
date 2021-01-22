@@ -118,15 +118,7 @@ public class UserController {
                                  Model model) {
         int pageSize = PAGN_NOTE_PER_PAGE;
         Page<User> page = userService.getPatientsByEmployeesId(id,pageNo,pageSize, sortField, sortDir);
-        List<User> listUser = page.getContent();
-        model.addAttribute(PAGN_CURRENT_PAGE, pageNo);
-        model.addAttribute(PAGN_TOTAL_PAGES, page.getTotalPages());
-        model.addAttribute(PAGN_TOTAL_USER, page.getTotalElements());
-        model.addAttribute(PAGN_SORT_FIELD, sortField);
-        model.addAttribute(PAGN_SORT_DIRECTION, sortDir);
-        model.addAttribute(PAGN_REVERSE_SORT_DIR,
-                sortDir.equals(PAGN_ASC) ? PAGN_DESC : PAGN_ASC);
-        model.addAttribute(USERS, listUser);
+        addToModel(page, model,pageNo,sortField,sortDir);
         return PAGE_PATIENTS;
     }
 
@@ -144,7 +136,11 @@ public class UserController {
                                  Model model) {
         int pageSize = PAGN_NOTE_PER_PAGE;
         Page<User> page = userService.findPaginatedUser(pageNo,pageSize, sortField, sortDir, DOCTOR);
-        List<User> listUser = page.getContent();
+        addToModel(page, model,pageNo,sortField,sortDir);
+        return PAGE_DOCTORS;
+    }
+
+    Model addToModel(Page<User> page, Model model, int pageNo, String sortField, String sortDir) {
         model.addAttribute(PAGN_CURRENT_PAGE, pageNo);
         model.addAttribute(PAGN_TOTAL_PAGES, page.getTotalPages());
         model.addAttribute(PAGN_TOTAL_USER, page.getTotalElements());
@@ -152,8 +148,8 @@ public class UserController {
         model.addAttribute(PAGN_SORT_DIRECTION, sortDir);
         model.addAttribute(PAGN_REVERSE_SORT_DIR,
                 sortDir.equals(PAGN_ASC) ? PAGN_DESC : PAGN_ASC);
-        model.addAttribute(USERS, listUser);
-        return PAGE_DOCTORS;
+        model.addAttribute(USERS, page.getContent());
+        return model;
     }
 
 }
