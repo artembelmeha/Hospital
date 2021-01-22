@@ -13,6 +13,7 @@ import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 import com.example.hospital.repository.UserRepository;
 import com.example.hospital.service.UserService;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -153,5 +154,25 @@ public class UserServiceImpl implements UserService {
         result.removeAll(busyNurse);
         return result;
     }
+
+    @Override
+    public Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+
+
+        List<User> listUser = userRepository.getUsersByRoleEquals(DOCTOR);
+
+
+
+
+        Page<User> page = new PageImpl<>(listUser, pageable, listUser.size());
+//        return userRepository.findAll(pageable);
+//        return page
+        return userRepository.findAllByRole(DOCTOR, pageable);
+    }
+
 
 }

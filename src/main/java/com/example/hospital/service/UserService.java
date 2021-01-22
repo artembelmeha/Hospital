@@ -5,6 +5,7 @@ import com.example.hospital.dto.RegistrationUserDto;
 import com.example.hospital.model.Qualification;
 import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,6 +38,8 @@ public interface UserService extends UserDetailsService {
     User getUserById(long id);
 
     Set<User> getAvailableNurse(Set<User> busyNurse);
+
+    Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection);
 
 }
 

@@ -83,6 +83,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "assignment_id"))
     private Set<Assignment> assignmentList;
 
+
     public int getNumberOfPatient() {
         return patients.size();
     }

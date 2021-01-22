@@ -13,6 +13,16 @@ public interface Constants {
 	String PAGE_ASSIGNMENT_NEW = "assignment-new";
 	String PAGE_ASSIGNMENT = "assignment";
 
+	int  PAGN_NOTE_PER_PAGE = 10;
+	String PAGN_ASC = "asc";
+	String PAGN_DESC = "desc";
+	String PAGN_REVERSE_SORT_DIR = "reverseSortDir";
+	String PAGN_CURRENT_PAGE = "currentPage";
+	String PAGN_TOTAL_PAGES = "totalPages";
+	String PAGN_TOTAL_USER = "totalUser";
+	String PAGN_SORT_FIELD = "sortField";
+	String PAGN_SORT_DIRECTION = "sortDirection";
+
 	String PAGE_DOCTOR_REGISTRATION = "doctor-registration";
 	String PAGE_PATIENT_REGISTRATION = "patient-registration";
 	String PAGE_PATIENT_INFO = "patient-info";

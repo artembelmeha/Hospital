@@ -2,6 +2,8 @@ package com.example.hospital.repository;
 
 import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,4 +28,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT * FROM users WHERE card_id = ?1", nativeQuery = true)
     User getUserByMedicalCardId(long id);
+
+    Page<User> findAllByRole(Role role, Pageable pageable);
 }

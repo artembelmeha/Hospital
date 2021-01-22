@@ -10,8 +10,10 @@ import com.example.hospital.dto.DoctorDto;
 import com.example.hospital.dto.PatientDTO;
 import com.example.hospital.dto.PatientInfoDto;
 import com.example.hospital.dto.RegistrationUserDto;
+import com.example.hospital.model.User;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.example.hospital.service.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -115,6 +119,26 @@ public class UserController {
     public String getPatientInfo(@PathVariable long id, Model model) {
         model.addAttribute(PATIENT_INFO_DTO, new PatientInfoDto(userService.getUserById(id)));
         return PAGE_PATIENT_INFO;
+    }
+
+    @GetMapping("/doctors/page/{pageNo}")
+    public String viewPaginationDoctor(@PathVariable int pageNo,
+                                 @RequestParam String sortField,
+                                 @RequestParam String sortDir,
+                                 Model model) {
+        int pageSize = PAGN_NOTE_PER_PAGE;
+        Page<User> page = userService.findPaginatedUser(pageNo,pageSize, sortField, sortDir);
+        List<User> listUser = page.getContent();
+
+        model.addAttribute(PAGN_CURRENT_PAGE, pageNo);
+        model.addAttribute(PAGN_TOTAL_PAGES, page.getTotalPages());
+        model.addAttribute(PAGN_TOTAL_USER, page.getTotalElements());
+        model.addAttribute(PAGN_SORT_FIELD, sortField);
+        model.addAttribute(PAGN_SORT_DIRECTION, sortDir);
+        model.addAttribute(PAGN_REVERSE_SORT_DIR,
+                sortDir.equals(PAGN_ASC) ? PAGN_DESC : PAGN_ASC);
+        model.addAttribute(USERS, listUser);
+        return PAGE_DOCTORS;
     }
 
 }

@@ -20,7 +20,8 @@
                     <a th:href="@{/users/nurses}" th:text="#{login.nurses}">Nurse</a>
                 </li>
                 <li sec:authorize="hasAuthority('ADMIN')">
-                    <a th:href="@{/users/doctors}" th:text="#{doctor.doctors}">Doctors</a>
+                    <a th:href="@{'/users/doctors/page/1?sortField=firstName&sortDir=asc'}"
+                       th:text="#{doctor.doctors}">Doctors</a>
                 </li>
             </ul>
             <ul>
