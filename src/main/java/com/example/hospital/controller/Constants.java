@@ -13,7 +13,6 @@ public interface Constants {
 	String PAGE_ASSIGNMENT_NEW = "assignment-new";
 	String PAGE_ASSIGNMENT = "assignment";
 
-	int  PAGN_NOTE_PER_PAGE = 10;
 	String PAGN_ASC = "asc";
 	String PAGN_DESC = "desc";
 	String PAGN_REVERSE_SORT_DIR = "reverseSortDir";

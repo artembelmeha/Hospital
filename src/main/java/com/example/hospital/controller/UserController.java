@@ -13,6 +13,7 @@ import com.example.hospital.dto.RegistrationUserDto;
 import com.example.hospital.model.User;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,10 +26,13 @@ import com.example.hospital.service.UserService;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    private static final Logger LOGGER  = getLogger(UserController.class);
+    private static final Logger LOGGER = getLogger(UserController.class);
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${default.page.size}")
+    private int defaultPageSize;
 
     @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder) {
@@ -45,9 +49,9 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     @PostMapping()
-    public String create(@ModelAttribute("user")  @Valid RegistrationUserDto user,
-                         BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
+    public String create(@ModelAttribute("user") @Valid RegistrationUserDto user,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             LOGGER.error("Error during binding user.");
             bindingResult.getAllErrors().forEach(error -> LOGGER.error(error.getDefaultMessage()));
             return PAGE_REGISTRATION;
@@ -105,7 +109,7 @@ public class UserController {
     public String setPatient(@PathVariable long id,
                              @ModelAttribute("patientDTO") PatientDTO patientDTO) {
         userService.patientDtoToUsers(patientDTO);
-        return REDIRECT_TO_PAGE_PATIENTS_OF+id;
+        return REDIRECT_TO_PAGE_PATIENTS_OF + id;
     }
 
     @GetMapping("/patients/of/{id}/{pageNo}")
@@ -114,12 +118,10 @@ public class UserController {
                                  @RequestParam String sortField,
                                  @RequestParam String sortDir,
                                  Model model) {
-        int pageSize = PAGN_NOTE_PER_PAGE;
-        Page<User> page = userService.getPatientsByEmployeesId(id,pageNo,pageSize, sortField, sortDir);
-        addToModel(page, model,pageNo,sortField,sortDir);
+        Page<User> page = userService.getPatientsByEmployeesId(id, pageNo, defaultPageSize, sortField, sortDir);
+        addToModel(page, model, pageNo, sortField, sortDir);
         return PAGE_PATIENTS;
     }
-
 
     @GetMapping("/patients/{id}/info")
     public String getPatientInfo(@PathVariable long id, Model model) {
@@ -129,12 +131,11 @@ public class UserController {
 
     @GetMapping("/doctors/page/{pageNo}")
     public String viewPaginationDoctor(@PathVariable int pageNo,
-                                 @RequestParam String sortField,
-                                 @RequestParam String sortDir,
-                                 Model model) {
-        int pageSize = PAGN_NOTE_PER_PAGE;
-        Page<User> page = userService.findPaginatedUser(pageNo,pageSize, sortField, sortDir, DOCTOR);
-        addToModel(page, model,pageNo,sortField,sortDir);
+                                       @RequestParam String sortField,
+                                       @RequestParam String sortDir,
+                                       Model model) {
+        Page<User> page = userService.findPaginatedUser(pageNo, defaultPageSize, sortField, sortDir, DOCTOR);
+        addToModel(page, model, pageNo, sortField, sortDir);
         return PAGE_DOCTORS;
     }
 
