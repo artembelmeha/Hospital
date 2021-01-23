@@ -31,4 +31,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User getUserByMedicalCardId(long id);
 
     Page<User> findAllByRole(Role role, Pageable pageable);
+
 }

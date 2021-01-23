@@ -34,4 +34,5 @@ public class MedicalCardController {
         model.addAttribute(DIAGNOSIS, "");
         return PAGE_MEDICAL_CARD;
     }
+
 }
