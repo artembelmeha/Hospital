@@ -7,12 +7,12 @@
             </div>
             <ul>
                 <li sec:authorize="hasAuthority('ADMIN')">
-                    <a th:href="@{/users/recent}" th:text="#{login.users}">Users</a>
+                    <a th:href="@{/users/undefine}" th:text="#{login.users}">Users</a>
                 </li>
 
                 <li sec:authorize="hasAnyAuthority('ADMIN','DOCTOR','NURSE')">
                     <a
-                   th:href="@{'/users/patients/of/'+${#authentication.details.id}+'/1?sortField=firstName&sortDir=asc'}"
+                   th:href="@{'/users/'+${#authentication.details.id}+'/patients/page/1?sortField=firstName&sortDir=asc'}"
                        th:text="#{login.patients}">Patients</a>
                 </li>
 

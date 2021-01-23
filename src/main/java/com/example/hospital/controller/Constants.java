@@ -2,10 +2,11 @@ package com.example.hospital.controller;
 
 public interface Constants {
 	String REDIRECT_PREFIX = "redirect:";
+	String PREFIX_INFO = "/info";
 	String PAGE_LOGIN = "login";
 	String PAGE_HOME = "home";
 	String PAGE_REGISTRATION = "registration";
-	String PAGE_USERS_RECENT = "users-recent";
+	String PAGE_USERS_UNDEFINE = "users-undefine";
 	String PAGE_NURSES = "users-nurse";
 	String PAGE_DOCTORS = "users-doctors";
 	String PAGE_PATIENTS = "users-patients";
@@ -28,6 +29,7 @@ public interface Constants {
 	String PAGE_PATIENT_INFO = "patient-info";
 
 	String REDIRECT_TO_PAGE_NURSES = REDIRECT_PREFIX + "/users/nurses";
+	String REDIRECT_TO_PAGE_PATIENTS = REDIRECT_PREFIX + "/users/patients/";
 	String REDIRECT_TO_PAGE_DOCTORS = REDIRECT_PREFIX + "/users/doctors";
 	String REDIRECT_TO_PAGE_PATIENTS_OF = REDIRECT_PREFIX + "/users/patients/of/";
 	String REDIRECT_TO_PAGE_PATIENTS = REDIRECT_PREFIX + "/users/patients/";
@@ -45,9 +47,10 @@ public interface Constants {
 	String MEDICAL_CARD_ID = "medicalCardId";
 	String ASSIGNMENTS = "assignments";
 	String DOCTORS = "doctors";
-	String PATIENT_DTO = "patientDTO";
+	String PATIENT_DTO = "patientDto";
 	String PATIENT_INFO_DTO = "patientInfoDto";
 	String ASSIGNMENT_DTO = "assignmentDto";
 	String MEDICAL_CARD = "medicalCard";
 	String DIAGNOSIS = "diagnosis";
+	String ID_OF_USER = "id";
 }

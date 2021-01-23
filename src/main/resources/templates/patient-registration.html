@@ -15,7 +15,7 @@
 
     <h2 th:text="#{patient.patientRegistration}">Patient registration</h2>
     <br>
-    <form th:method="POST" th:action="@{|/users/patients/${#authentication.details.id}|}" th:object="${patientDTO}">
+    <form th:method="POST" th:action="@{/users/update/patient}" th:object="${patientDto}">
         <table>
             <tr>
                 <td>
@@ -47,7 +47,7 @@
                     <label th:text="#{patient.birthDate}">Date Birth</label>
                 </td>
                 <td>
-                    <input type="date" th:field="*{birthDate}" />
+                    <input type="date" th:field="*{birthDate}"/>
                 </td>
             </tr>
             <tr>
@@ -92,8 +92,7 @@
                 </td>
             </tr>
         </table>
-        <input type="hidden" th:field="*{id}" th:value="*{id}"/>
-        <input type="hidden" th:field="*{email}" th:value="*{email}"/>
+                    <input type="hidden" th:field="*{id}" th:value="*{id}"/>
     </form>
 </div>
 </body>

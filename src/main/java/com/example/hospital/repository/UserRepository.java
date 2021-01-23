@@ -17,7 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> getUsersByRoleEquals(Role role);
 
-    Page<User> getUsersByRoleEquals(Role role,Pageable pageable);
 
     User getUserById(long id);
 
@@ -26,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT *FROM users WHERE users.card_id in " +
             "(select distinct(a.card_id) from assignment_nursehelper an " +
             "join assignment a on a.id = an.assignment_id where an.nurse_id = ?1)", nativeQuery = true)
-    Page<User> getUsersByNurseId(long id, Pageable pageable);
+    List<User> getUsersByNurseId(long id);
 
     @Query(value = "SELECT * FROM users WHERE card_id = ?1", nativeQuery = true)
     User getUserByMedicalCardId(long id);

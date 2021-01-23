@@ -9,7 +9,6 @@ import java.util.List;
 
 @Data
 @Entity
-@ToString
 @Table(name = "cards")
 public class MedicalCard {
 

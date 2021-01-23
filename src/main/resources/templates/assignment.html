@@ -85,12 +85,13 @@
                 </td>
             </tr>
             <tr>
-                <div sec:authorize="hasAnyAuthority('DOCTOR','NURSE')">
+                <span th:if="${#authorization.expression('hasAuthority(''DOCTOR'')')
+                    or  (#authorization.expression('hasAuthority(''NURSE'')') and  assignmentDto.getAssignmentType().name() ne 'SURGERY') }">
                     <td th:colspan="2">
                         <input class="addDone" type="submit" th:value="#{assignment.addOneExecution}"
                              th:disabled="${assignmentDto.isComplete}">
                     </td>
-                </div>
+                </span>
             </tr>
         </table>
 
@@ -121,15 +122,15 @@
             <tr>
                 <th th:text="#{list.no}">No.</th>
                 <th th:text="#{list.fullName}">Full name</th>
-                <th th:text="#{assignment.assign}">Assign</th>
+                <th th:text="#{assignment.action}">Action</th>
             </tr>
-            <tr th:each="user, iStat: ${users}">
+            <tr th:each="nurse, iStat: ${nurses}">
                 <td th:text="${iStat.index + 1}"/>
                 <td>
-                    <a th:text="${user.firstName + ' ' + user.lastName}"/>
+                    <a th:text="${nurse.firstName + ' ' + nurse.lastName}"/>
                 </td>
                 <td>
-                    <a th:href="@{|/assignment/nurse/${assignmentDto.id}/${user.id}|}" th:text="#{doctor.add}">Add</a>
+                    <a th:href="@{|/assignment/nurse/${assignmentDto.id}/${nurse.id}|}" th:text="#{assignment.assign}">Add</a>
                 </td>
             </tr>
         </table>

@@ -30,13 +30,13 @@
             <td th:text="${user.email}"/>
 
             <td>
-                <a th:href="@{|/users/nurses/${user.id}|}" th:text="#{list.signAsNurse}">Sign as Nurse</a>
+                <a th:href="@{|/users/appoint/nurse/${user.id}|}" th:text="#{list.signAsNurse}">Sign as Nurse</a>
             </td>
             <td>
-                <a th:href="@{|/users/doctors/${user.id}|}" th:text="#{list.signAsDoctor}">Sign as Doctor</a>
+                <a th:href="@{|/users/appoint/doctor/${user.id}|}" th:text="#{list.signAsDoctor}">Sign as Doctor</a>
             </td>
             <td>
-                <a th:href="@{|/users/patients/${user.id}|}" th:text="#{list.signAsPatient}">Sign as Patient</a>
+                <a th:href="@{|/users/appoint/patient/${user.id}|}" th:text="#{list.signAsPatient}">Sign as Patient</a>
             </td>
         </tr>
     </table>

@@ -5,7 +5,6 @@ import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @ToString

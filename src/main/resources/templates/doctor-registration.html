@@ -15,7 +15,7 @@
 
     <h2 th:text="#{doctor.doctorRegistration}">Doctor registration</h2>
     <br>
-    <form th:method="POST" th:action="@{|/users/doctors/${user.id}|}" th:object="${user}">
+    <form th:method="POST" th:action="@{|/users/doctor/define/qualification/${user.id}|}" th:object="${user}">
         <table>
             <tr>
                 <td>

@@ -6,5 +6,5 @@ public interface MedicalCardService {
 
     MedicalCard getCardById(Long id);
 
-    void setDiagnosisToCard(String diagnosis, long id);
+    void dischargePatient(String diagnosis, long id);
 }

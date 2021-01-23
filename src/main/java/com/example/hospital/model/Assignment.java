@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Data
 @Entity
-@ToString
 @Table(name = "assignment")
 public class Assignment {
     @Id
@@ -51,6 +50,7 @@ public class Assignment {
     @JoinTable(name = "assignment_nursehelper",
             joinColumns = @JoinColumn(name = "assignment_id"),
             inverseJoinColumns = @JoinColumn(name = "nurse_id"))
+    @ToString.Exclude
     private Set<User> nurses;
 
 }

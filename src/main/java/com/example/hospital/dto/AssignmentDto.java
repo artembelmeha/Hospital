@@ -1,21 +1,23 @@
 package com.example.hospital.dto;
 
+
 import com.example.hospital.model.Assignment;
 import com.example.hospital.model.AssignmentType;
-import com.example.hospital.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
+
 
 @Data
 @NoArgsConstructor
-@ToString
-public class AssignmentDTO {
+public class AssignmentDto {
     private long id;
     private long medicalCardID;
     private AssignmentType assignmentType;
@@ -26,15 +28,14 @@ public class AssignmentDTO {
     private int doneTimes;
     private String currentDiagnosis;
     private String notes;
-    private  boolean isComplete = false;
-    private Set<User> nurses = new HashSet<>();
+    private boolean isComplete;
+    private Set<UserDto> nurses = new HashSet<>();
 
-
-    public AssignmentDTO(long medicalCardID) {
+    public AssignmentDto(long medicalCardID) {
         this.medicalCardID = medicalCardID;
     }
 
-    public AssignmentDTO(Assignment assignment){
+    public AssignmentDto(Assignment assignment){
         this.id = assignment.getId();
         this.medicalCardID = assignment.getMedicalCard().getId();
         this.assignmentType = assignment.getType();
@@ -45,6 +46,8 @@ public class AssignmentDTO {
         this.currentDiagnosis = assignment.getCurrentDiagnosis();
         this.notes = assignment.getNotes();
         this.isComplete = assignment.isComplete();
-        this.nurses = assignment.getNurses();
+        this.nurses = emptyIfNull(assignment.getNurses()).stream()
+                .map(UserDto::new)
+                .collect(Collectors.toSet());
     }
 }

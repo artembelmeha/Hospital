@@ -23,8 +23,8 @@ public class MedicalCardController {
     }
 
     @PostMapping("/finish/{id}")
-    public String finishTreatmentIn(@PathVariable long id, @RequestParam("diagnosis") String diagnosis) {
-        medicalCardService.setDiagnosisToCard(diagnosis, id);
+    public String finishTreatmentIn(@PathVariable long id, @RequestParam String diagnosis) {
+        medicalCardService.dischargePatient(diagnosis, id);
         return PAGE_HOME;
     }
 

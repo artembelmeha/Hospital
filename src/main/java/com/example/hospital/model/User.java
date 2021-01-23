@@ -56,6 +56,7 @@ public class User implements UserDetails {
     private User doctor;
 
     @OneToMany(mappedBy = "doctor")
+    @ToString.Exclude
     private List<User> patients = new ArrayList<>();
 
 
@@ -81,6 +82,7 @@ public class User implements UserDetails {
     @JoinTable(name = "assignment_nursehelper",
             joinColumns = @JoinColumn(name = "nurse_id"),
             inverseJoinColumns = @JoinColumn(name = "assignment_id"))
+    @ToString.Exclude
     private Set<Assignment> assignmentList;
 
 
