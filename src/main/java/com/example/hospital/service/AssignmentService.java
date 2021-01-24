@@ -1,15 +1,15 @@
 package com.example.hospital.service;
 
-import com.example.hospital.dto.AssignmentDTO;
 import com.example.hospital.model.Assignment;
 
 public interface AssignmentService {
 
-    void addNewAssignment(AssignmentDTO assignmentDTO);
+    void addNewAssignment(Assignment assignment);
 
-    Assignment getAssignmentById(long id);
+    Assignment get(long id);
 
-    void addOneExecutionToAssignmentById(long id);
+    void addOneExecutionToAssignment(long id);
 
-    void addNurseByIdToAssignment(long nurseId, long assignmentId);
+    void addNurseToAssignment(long nurseId, long assignmentId);
+
 }

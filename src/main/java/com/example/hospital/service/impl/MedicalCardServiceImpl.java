@@ -34,12 +34,9 @@ public class MedicalCardServiceImpl implements MedicalCardService {
 
     @Transactional
     @Override
-    public void setDiagnosisToCard(String diagnosis, long id) {
-        User user = userRepository.getUserByMedicalCardId(id);
-        user.setDoctor(null);
-        user.setRole(UNDEFINE);
-        user.setOnTreatment(false);
-
+    public void dischargePatient(String diagnosis, long id) {
+        User user = setDischargeUserById(id);
+        setFinalDiagnosis(diagnosis, id);
         userRepository.save(user);
     }
 

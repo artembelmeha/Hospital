@@ -1,7 +1,6 @@
 package com.example.hospital.model;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +15,6 @@ import java.util.*;
 @Slf4j
 @Data
 @Entity
-@ToString
 @Table(name = "users")
 public class User implements UserDetails {
 

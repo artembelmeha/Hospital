@@ -1,33 +1,44 @@
 package com.example.hospital.dto;
 
-import com.example.hospital.model.*;
+import com.example.hospital.model.Qualification;
+import com.example.hospital.model.Sex;
+import com.example.hospital.model.User;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Pattern;
-
+import java.time.LocalDate;
 
 @Data
-@ToString
-public class PatientDTO {
-    private long id;
-    private String firstName;
-    private String lastName;
-    private String email;
+@NoArgsConstructor
+public class PatientDto extends UserDto {
+
     private long doctorId;
+    private String doctorFirstName;
+    private String doctorLastName;
+    private Qualification doctorQualification;
     private boolean isOnTreatment = false;
-    @Pattern(regexp = "[dddd-dd-dd]", message = "Invalid data")
-    private String birthDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
     private Sex sex;
     private String telephoneNumber;
+    private Long medicalCardId;
 
-    public PatientDTO() {
+    public PatientDto(User user) {
+        super(user);
+    }
+    public PatientDto(User user, long id) {
+        super(user);
+        User doctor = user.getDoctor();
+        this.doctorId = doctor.getId();
+        this.doctorFirstName = doctor.getFirstName();
+        this.doctorLastName = doctor.getLastName();
+        this.isOnTreatment = user.isOnTreatment();
+        this.birthDate = user.getBirthDate();
+        this.sex = user.getSex();
+        this.telephoneNumber = user.getTelephoneNumber();
+        this.doctorQualification = doctor.getQualification();
+        this.medicalCardId = user.getMedicalCard().getId();
     }
 
-    public PatientDTO(User user) {
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.email = user.getEmail();
-    }
 }

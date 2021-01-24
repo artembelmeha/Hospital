@@ -1,6 +1,7 @@
 package com.example.hospital.controller;
 
 public interface Constants {
+
 	String REDIRECT_PREFIX = "redirect:";
 	String PREFIX_INFO = "/info";
 	String PAGE_LOGIN = "login";
@@ -33,20 +34,15 @@ public interface Constants {
 	String REDIRECT_TO_PAGE_PATIENTS = REDIRECT_PREFIX + "/users/patients/";
 	String REDIRECT_TO_PAGE_DOCTORS = REDIRECT_PREFIX + "/users/doctors";
 	String REDIRECT_TO_PAGE_PATIENTS_OF = REDIRECT_PREFIX + "/users/patients/of/";
-	String REDIRECT_TO_PAGE_PATIENTS = REDIRECT_PREFIX + "/users/patients/";
 	String REDIRECT_TO_PAGE_HOME = REDIRECT_PREFIX + "/home";
-	String REDIRECT_TO_REGISTRATION = REDIRECT_PREFIX + "/users";
 	String REDIRECT_TO_MEDICAL_CARD = REDIRECT_PREFIX + "/medicalCard/";
 	String REDIRECT_TO_ASSIGNMENT = REDIRECT_PREFIX + "/assignment";
-
-
-	String INDEX_PAGE = "index";
-
+	String REDIRECT_TO_ASSIGNMENT_VIEW = REDIRECT_TO_ASSIGNMENT + "/view/";
+	String REDIRECT_TO_PAGE_REGISTRATION = REDIRECT_TO_ASSIGNMENT + "/registration";
+	String ANONYMOUS = "anonymousUser";
 	String USERS = "users";
-	String ID = "id";
 	String USER = "user";
-	String MEDICAL_CARD_ID = "medicalCardId";
-	String ASSIGNMENTS = "assignments";
+	String NURSES = "nurses";
 	String DOCTORS = "doctors";
 	String REGISTRATION_INFO = "registrationInfo";
 	String PATIENT_DTO = "patientDto";

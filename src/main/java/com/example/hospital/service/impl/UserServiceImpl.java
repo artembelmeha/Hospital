@@ -1,30 +1,29 @@
 package com.example.hospital.service.impl;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import com.example.hospital.dto.PatientDTO;
-import com.example.hospital.dto.RegistrationUserDto;
-import com.example.hospital.exception.NullEntityReferenceException;
+import com.example.hospital.dto.PatientDto;
+import com.example.hospital.dto.RegistrationInfo;
 import com.example.hospital.model.MedicalCard;
 import com.example.hospital.model.Qualification;
-import static com.example.hospital.model.Role.*;
-
 import com.example.hospital.model.Role;
 import com.example.hospital.model.User;
 import com.example.hospital.repository.UserRepository;
 import com.example.hospital.service.UserService;
+import org.slf4j.Logger;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.slf4j.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+
+import static com.example.hospital.model.Role.*;
+import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.data.domain.Page.empty;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 
 @Component
@@ -35,52 +34,23 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User create(RegistrationUserDto registrationUser) {
+    public User create(RegistrationInfo registrationInfo) {
         User user = new User();
-        user.setPassword(registrationUser.getPassword());
+        user.setPassword(registrationInfo.getPassword());
         user.setRole(UNDEFINE);
-        user.setEmail(registrationUser.getEmail());
-        user.setLastName(registrationUser.getLastName());
-        user.setFirstName(registrationUser.getFirstName());
+        user.setEmail(registrationInfo.getEmail());
+        user.setLastName(registrationInfo.getLastName());
+        user.setFirstName(registrationInfo.getFirstName());
         user.setOnTreatment(false);
-        try {
-            return userRepository.save(user);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Error during saving user.", e);
-            throw new NullEntityReferenceException("User cannot be 'null'");
-        }
+        User savedUser = userRepository.save(user);
+        LOGGER.debug("User with id [{}] successfully saved.", savedUser.getId());
+        return savedUser;
     }
 
     @Override
     public User findById(long id) {
         return userRepository.findById(id)
               .orElseThrow(() -> new EntityNotFoundException("User with id [" + id + "] not found."));
-    }
-
-    @Override
-    public User update(User user) {
-        if (user != null) {
-            User oldUser = findById(user.getId());
-            if (oldUser != null) {
-                return userRepository.save(user);
-            }
-        }
-        throw new NullEntityReferenceException("User cannot be 'null'");
-    }
-
-    @Override
-    public void delete(long id) {
-        User user = findById(id);
-        if (user != null) {
-            userRepository.delete(user);
-        } else {
-            throw new NullEntityReferenceException("User cannot be 'null'");
-        }
-    }
-
-    @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
     }
 
     @Override
@@ -95,6 +65,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(DOCTOR);
         user.setQualification(qualification);
         userRepository.save(user);
+        LOGGER.debug("Qualification [{}] successfully updated for doctor [{}].", qualification.name(), id);
     }
 
     @Transactional
@@ -103,51 +74,53 @@ public class UserServiceImpl implements UserService {
         User user = findById(id);
         user.setRole(role);
         userRepository.save(user);
+        LOGGER.debug("Role [{}] successfully updated for user [{}].", role.name(), id);
     }
 
-
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String email) {
         User user = userRepository.getUserByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("User not Found!");
+            throw new UsernameNotFoundException("User with email [" + email +"] not found!");
         }
         return user;
     }
 
     @Transactional
     @Override
-    public Page<User> getPatientsByEmployeesId(long id,int pageNo, int pageSize, String sortField, String sortDirection) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
-                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+    public Page<User> getPatientsByEmployeesId(long id, int pageNo, int pageSize, String sortField, String sortDirection) {
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
         User user = userRepository.getUserById(id);
-        if(user.getRole().equals(ADMIN)) {
-            return userRepository.findAllByRole(PATIENT, pageable);
+
+        switch (user.getRole()) {
+            case ADMIN:
+                return userRepository.findAllByRole(PATIENT, pageable);
+            case DOCTOR:
+                return userRepository.getUserByDoctor(user, pageable);
+            case NURSE:
+                return new PageImpl<>(userRepository.getUsersByNurseId(id));
+            default:
+                return empty();
         }
-        if(user.getRole().equals(DOCTOR)) {
-            return userRepository.getUserByDoctor(user, pageable);
-        }
-        if(user.getRole().equals(NURSE)) {
-            return userRepository.getUsersByNurseId(id, pageable);
-        }
-        return new PageImpl<User>(null);
     }
 
     @Transactional
     @Override
-    public User patientDtoToUsers(PatientDTO patientDTO) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        User user = userRepository.getUserById(patientDTO.getId());
-        user.setFirstName(patientDTO.getFirstName());
-        user.setLastName(patientDTO.getLastName());
-        user.setBirthDate(LocalDate.parse(patientDTO.getBirthDate(), formatter));
-        user.setTelephoneNumber(patientDTO.getTelephoneNumber());
-        user.setSex(patientDTO.getSex());
-        user.setDoctor(userRepository.getUserById(patientDTO.getDoctorId()));
+    public User updatePatientInfo(PatientDto patientDto) {
+        User user = userRepository.getUserById(patientDto.getId());
+        user.setFirstName(patientDto.getFirstName());
+        user.setLastName(patientDto.getLastName());
+        user.setBirthDate(patientDto.getBirthDate());
+        user.setTelephoneNumber(patientDto.getTelephoneNumber());
+        user.setSex(patientDto.getSex());
+        user.setRole(PATIENT);
+        user.setDoctor(userRepository.getUserById(patientDto.getDoctorId()));
         user.setMedicalCard(new MedicalCard());
         user.setOnTreatment(true);
+
         userRepository.save(user);
+        LOGGER.debug("Patient info successfully updated for user [{}].", patientDto.getId());
         return user;
     }
 
@@ -158,19 +131,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<User> getAvailableNurse(Set<User> busyNurse) {
-        Set<User> result = new HashSet<>(getUsersByRole(NURSE));
-        result.removeAll(busyNurse);
-        return result;
+    public List<User> getAvailableNurses(Set<Long> busyNursesIds) {
+        return busyNursesIds.isEmpty() ?
+                userRepository.getUsersByRoleEquals(NURSE) :
+                userRepository.getUsersByRoleEqualsAndIdNotIn(NURSE, busyNursesIds);
     }
 
     @Override
     public Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection, Role role) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
-                Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        Pageable pageable = getPageable(pageNo, pageSize, sortField, sortDirection);
         return userRepository.findAllByRole(role, pageable);
     }
 
+    private Pageable getPageable(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = getSort(sortField, sortDirection);
+        return PageRequest.of(pageNo - 1, pageSize, sort);
+    }
 
+    private Sort getSort(String sortField, String sortDirection) {
+        return sortDirection.equalsIgnoreCase(ASC.name()) ?
+              Sort.by(sortField).ascending() :
+              Sort.by(sortField).descending();
+    }
+
+    @Override
+    public boolean isSuchUserExist(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }
