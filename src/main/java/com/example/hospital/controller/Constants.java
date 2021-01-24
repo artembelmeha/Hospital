@@ -48,6 +48,7 @@ public interface Constants {
 	String MEDICAL_CARD_ID = "medicalCardId";
 	String ASSIGNMENTS = "assignments";
 	String DOCTORS = "doctors";
+	String REGISTRATION_INFO = "registrationInfo";
 	String PATIENT_DTO = "patientDto";
 	String PATIENT_INFO_DTO = "patientInfoDto";
 	String ASSIGNMENT_DTO = "assignmentDto";

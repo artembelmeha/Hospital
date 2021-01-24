@@ -17,6 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> getUsersByRoleEquals(Role role);
 
+    boolean existsByEmail(String email);
+
+    List<User> getUsersByRoleEqualsAndIdNotIn(Role role, Set<Long> excludedIds);
 
     User getUserById(long id);
 

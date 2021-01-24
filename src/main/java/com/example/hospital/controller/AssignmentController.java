@@ -48,10 +48,33 @@ public class AssignmentController {
         return PAGE_ASSIGNMENT;
     }
 
-    @GetMapping("/{id}/addOne")
-    public String addOneExecution(@PathVariable long id) {
-        assignmentService.addOneExecutionToAssignmentById(id);
-        return REDIRECT_TO_ASSIGNMENT+"/view/"+id;
+    @PreAuthorize("hasAuthority('DOCTOR') or hasAuthority('NURSE')")
+    @GetMapping("/{assignmentId}/addOne")
+    public String addOneExecution(@PathVariable long assignmentId) {
+        assignmentService.addOneExecutionToAssignment(assignmentId);
+        return REDIRECT_TO_ASSIGNMENT_VIEW + assignmentId;
+    }
+
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    @GetMapping("/nurse/{assignmentId}/{nurseId}")
+    public String assignNurseToAssignment(@PathVariable long nurseId, @PathVariable long assignmentId) {
+        assignmentService.addNurseToAssignment(nurseId, assignmentId);
+        return REDIRECT_TO_ASSIGNMENT_VIEW + assignmentId;
+    }
+
+    private Assignment convertToEntity(AssignmentDto assignmentDTO) {
+        Assignment assignment = new Assignment();
+        assignment.setCurrentDiagnosis(assignmentDTO.getCurrentDiagnosis());
+        assignment.setComplete(false);
+        assignment.setDoneTimes(0);
+        assignment.setDate(assignmentDTO.getDate());
+        assignment.setName(assignmentDTO.getName());
+        assignment.setNotes(assignmentDTO.getNotes());
+        assignment.setQuantity(assignmentDTO.getQuantity());
+        assignment.setType(assignmentDTO.getAssignmentType());
+        assignment.setNurses( convertNurses(assignmentDTO.getNurses()));
+        assignment.setMedicalCard(medicalCardService.getCardById(assignmentDTO.getMedicalCardID()));
+        return assignment;
     }
 
     @GetMapping("/nurse/{assignmentId}/{id}")

@@ -12,7 +12,7 @@
 <div th:replace="header"></div>
 <div class="m-5" p-1>
     <h2 th:text="#{login.newUserRegistration}"></h2>
-    <form th:method="POST" th:action="@{/users}" th:object="${user}">
+    <form th:method="POST" th:action="@{/users}" th:object="${registrationInfo}">
         <table>
 
             <tr>
@@ -23,7 +23,7 @@
                     <input type="text" th:field="*{firstName}" id="firstName"/>
                 </td>
                 <td>
-                    <div style="color: #ff0000" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First error</div>
+                    <div style="color: #ff0000" th:if="${#fields.hasErrors('firstName')}" th:text="#{message.forName}">First error</div>
                 </td>
             </tr>
             <tr>
@@ -35,7 +35,7 @@
                     <input type="text" th:field="*{lastName}" id="lastName"/>
                 </td>
                 <td>
-                    <div style="color: #ff0000" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last error</div>
+                    <div style="color: #ff0000" th:if="${#fields.hasErrors('lastName')}" th:text="#{message.forName}">Last error</div>
                 </td>
             </tr>
             <tr>
@@ -46,7 +46,8 @@
                     <input type="text" th:field="*{email}" id="email"/>
                 </td>
                 <td>
-                <div style="color: #ff0000" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+                <div style="color: #ff0000" th:if="${#fields.hasErrors('email')}" th:text="#{message.Email}">Email error</div>
+                <div style="color: #ff0000" th:if="${#fields.hasErrors('email')}" th:text="#{message.Email1}">Email error</div>
                 </td>
             </tr>
             <tr>
@@ -57,7 +58,7 @@
                     <input type="password" th:field="*{password}" id="password"/>
                 </td>
                 <td>
-                <div style="color: #ff0000" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
+                <div style="color: #ff0000" th:if="${#fields.hasErrors('password')}" th:text="#{message.Password}">Password error</div>
                 </td>
             </tr>
 

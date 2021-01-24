@@ -1,71 +1,67 @@
 package com.example.hospital.service.impl;
 
-import com.example.hospital.dto.AssignmentDTO;
-import com.example.hospital.model.Assignment;
-import com.example.hospital.model.User;
-import com.example.hospital.repository.AssignmentRepository;
-import com.example.hospital.repository.MedicalCardRepository;
-import com.example.hospital.repository.UserRepository;
-import com.example.hospital.service.AssignmentService;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import java.util.HashSet;
+import java.util.Optional;
+
+import javax.annotation.Resource;
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.slf4j.LoggerFactory.getLogger;
+import com.example.hospital.model.Assignment;
+import com.example.hospital.repository.AssignmentRepository;
+import com.example.hospital.repository.UserRepository;
+import com.example.hospital.service.AssignmentService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class AssignmentServiceImpl implements AssignmentService {
-    private static final Logger LOGGER = getLogger(AssignmentService.class);
+    private static final Logger LOGGER = getLogger(AssignmentServiceImpl.class);
+    private static final int ONE_EXECUTION = 1;
 
     @Resource
     private AssignmentRepository assignmentRepository;
     @Resource
-    private MedicalCardRepository medicalCardRepository;
-    @Resource
     private UserRepository userRepository;
 
-
     @Override
-    public void addNewAssignment(AssignmentDTO assignmentDTO) {
-        Assignment assignment = new Assignment();
-        assignment.setComplete(false);
-        assignment.setCurrentDiagnosis(assignmentDTO.getCurrentDiagnosis());
-        assignment.setDoneTimes(0);
-        assignment.setMedicalCard(medicalCardRepository.findMedicalCardById(assignmentDTO.getMedicalCardID()));
-        assignment.setDate(assignmentDTO.getDate());
-        assignment.setName(assignmentDTO.getName());
-        assignment.setNotes(assignmentDTO.getNotes());
-        assignment.setQuantity(assignmentDTO.getQuantity());
-        assignment.setType(assignmentDTO.getAssignmentType());
-        assignment.setNurses(assignmentDTO.getNurses());
+    public void addNewAssignment(Assignment assignment) {
         assignmentRepository.save(assignment);
-
+        LOGGER.debug("Assignment [{}] was successfully saved.", assignment.getId());
     }
 
     @Override
-    public Assignment getAssignmentById(long id) {
-        return assignmentRepository.getAssignmentById(id);
+    public Assignment get(long assignmentId) {
+        return assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Assignment with id [" + assignmentId + "] not found."));
     }
 
     @Override
-    public void addOneExecutionToAssignmentById(long id) {
-        Assignment assignment = assignmentRepository.getAssignmentById(id);
-        assignment.setDoneTimes(assignment.getDoneTimes() + 1); //todo
+    @Transactional
+    public void addOneExecutionToAssignment(long assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Assignment with id [" + assignmentId + "] not found."));
+
+        assignment.setDoneTimes(assignment.getDoneTimes() + ONE_EXECUTION);
         if(assignment.getDoneTimes() == assignment.getQuantity()) {
             assignment.setComplete(true);
             assignment.setNurses(new HashSet<>());
+            LOGGER.info("Assignment [{}] completed. Nurses were cleared.", assignmentId);
         }
         assignmentRepository.save(assignment);
     }
 
+    @Transactional
     @Override
-    public void addNurseByIdToAssignment(long nurseId, long assignmentId) {
-        Assignment assignment = assignmentRepository.getAssignmentById(assignmentId);
+    public void addNurseToAssignment(long nurseId, long assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Assignment with id [" + assignmentId + "] not found."));
         assignment.getNurses().add(userRepository.getUserById(nurseId));
         assignmentRepository.save(assignment);
+
+        LOGGER.debug("Nurse [{}] was added to assignment [{}].", nurseId, assignmentId);
     }
 }

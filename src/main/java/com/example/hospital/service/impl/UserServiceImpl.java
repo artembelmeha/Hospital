@@ -17,6 +17,7 @@ import org.springframework.data.domain.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.slf4j.Logger;
 import javax.annotation.Resource;
@@ -87,6 +88,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUsersByRoleEquals(role);
     }
 
+    @Transactional
     @Override
     public void setDoctorQualification(long id, Qualification qualification) {
         User user = findById(id);
@@ -95,6 +97,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public void setUserRole(long id, Role role) {
         User user = findById(id);
@@ -112,6 +115,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
     public Page<User> getPatientsByEmployeesId(long id,int pageNo, int pageSize, String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
@@ -130,6 +134,7 @@ public class UserServiceImpl implements UserService {
         return new PageImpl<User>(null);
     }
 
+    @Transactional
     @Override
     public User patientDtoToUsers(PatientDTO patientDTO) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -145,6 +150,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return user;
     }
+
 
     @Override
     public User getUserById(long id) {

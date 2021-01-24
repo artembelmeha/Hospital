@@ -10,11 +10,11 @@
 </head>
 <body >
 <div th:replace="header"></div>
-<div class="m-5 p-1">
+<div class="m-5 p-1" >
     <h2 th:text="#{login.loginForm}">LogIn Form</h2>
     <p style="color: #ff0000" th:if="${param.error}" th:text="#{login.emailOrPasswordIsInc}"></p>
-    <form th:action="@{/login}" method="POST">
-        <table>
+    <form th:action="@{/login}" method="POST" >
+        <table >
             <tr>
                 <td th:text="#{login.email}+':'">E-mail:</td>
                 <td>

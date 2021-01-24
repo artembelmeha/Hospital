@@ -41,5 +41,6 @@ public interface UserService extends UserDetailsService {
 
     Page<User> findPaginatedUser(int pageNo, int pageSize, String sortField, String sortDirection, Role role);
 
+    boolean isSuchUserExist(String email);
 }
 

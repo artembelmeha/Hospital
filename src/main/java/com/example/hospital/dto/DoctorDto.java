@@ -6,6 +6,9 @@ import com.example.hospital.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @ToString
 @NoArgsConstructor
@@ -16,6 +19,7 @@ public class DoctorDto {
     private String email;
     private Role role;
     private Qualification qualification;
+    private int patientsNumber;
 
     public DoctorDto(User user) {
         this.id = user.getId();
@@ -24,5 +28,7 @@ public class DoctorDto {
         this.email = user.getEmail();
         this.role = user.getRole();
         this.qualification = user.getQualification();
+        this.patientsNumber = user.getPatients().size();
     }
+
 }

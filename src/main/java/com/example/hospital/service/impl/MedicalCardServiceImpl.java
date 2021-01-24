@@ -7,6 +7,7 @@ import com.example.hospital.repository.UserRepository;
 import com.example.hospital.service.MedicalCardService;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
@@ -31,6 +32,7 @@ public class MedicalCardServiceImpl implements MedicalCardService {
                 .orElseThrow(() -> new EntityNotFoundException("Medical Card with id [" + id + "] not found."));
     }
 
+    @Transactional
     @Override
     public void setDiagnosisToCard(String diagnosis, long id) {
         User user = userRepository.getUserByMedicalCardId(id);
@@ -48,6 +50,7 @@ public class MedicalCardServiceImpl implements MedicalCardService {
         user.setOnTreatment(false);
         return user;
     }
+
     private void setFinalDiagnosis(String diagnosis, long id) {
         Optional<MedicalCard> medicalCard= medicalCardRepository.findMedicalCardById(id);
         if (medicalCard.isPresent()) {

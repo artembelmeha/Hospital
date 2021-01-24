@@ -8,8 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
-import javax.validation.constraints.Pattern;
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.*;
 

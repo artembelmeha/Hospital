@@ -1,16 +1,18 @@
 package com.example.hospital.dto;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
 @ToString
 @NoArgsConstructor
-public class RegistrationUserDto {
+public class RegistrationInfo {
+
+
     @Pattern(regexp = "[A-Z][a-z]+",
             message = "[firstName] Must start with a capital letter followed by one or more lowercase letters")
     @NotNull
@@ -25,8 +27,9 @@ public class RegistrationUserDto {
     @NotNull
     private String email;
 
-    //    @Pattern(regexp = "(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}",
-//            message = "[password] Must be minimum 6 characters, at least one letter and one number")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,10}",
+            message = "Must be minimum 6 characters, at least: one lowercase" +
+                    " latin character, one uppercase latin character and one number")
     private String password;
 
 }

@@ -2,26 +2,30 @@ package com.example.hospital.controller;
 
 import static com.example.hospital.controller.Constants.*;
 import static com.example.hospital.model.Role.*;
+import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
+
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-import com.example.hospital.dto.DoctorDto;
-import com.example.hospital.dto.PatientDTO;
-import com.example.hospital.dto.PatientInfoDto;
-import com.example.hospital.dto.RegistrationUserDto;
-import com.example.hospital.model.User;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.hospital.dto.*;
+import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 
 @Controller
@@ -29,127 +33,141 @@ import com.example.hospital.service.UserService;
 public class UserController {
     private static final Logger LOGGER = getLogger(UserController.class);
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    @Resource
+    private UserService userService;
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Value("${default.page.size}")
     private int defaultPageSize;
 
-    @Autowired
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     @GetMapping()
     public String register(Model model) {
-        model.addAttribute(USER, new RegistrationUserDto());
+        model.addAttribute(REGISTRATION_INFO, new RegistrationInfo());
         return PAGE_REGISTRATION;
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     @PostMapping()
-    public String create(@ModelAttribute("user") @Valid RegistrationUserDto user,
-                         BindingResult bindingResult) {
+    public String create( @ModelAttribute @Valid RegistrationInfo registrationInfo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            LOGGER.error("Error during binding user.");
+            LOGGER.error("Error during binding registrationInfo.");
             bindingResult.getAllErrors().forEach(error -> LOGGER.error(error.getDefaultMessage()));
-            return PAGE_REGISTRATION;
+            return "registration";
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.create(user);
+        if (userService.isSuchUserExist(registrationInfo.getEmail())) {
+            FieldError error = new FieldError("registrationInfo", "email",
+                    "User with such email already exist.");
+            bindingResult.addError(error);
+            LOGGER.error("User with such email already exist.");
+            return "registration";
+        }
+        registrationInfo.setPassword(passwordEncoder.encode(registrationInfo.getPassword()));
+        userService.create(registrationInfo);
         return REDIRECT_PREFIX;
     }
 
-    @GetMapping("/recent")
-    public String showUsers(Model model) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/undefine")
+    public String showUndefinedUsers(Model model) {
         model.addAttribute(USERS, userService.getUsersByRole(UNDEFINE));
-        return PAGE_USERS_RECENT;
+        return PAGE_USERS_UNDEFINE;
     }
 
-    @GetMapping("/nurses/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/appoint/nurse/{id}")
     public String setAsNurse(@PathVariable long id) {
         userService.setUserRole(id, NURSE);
         return REDIRECT_TO_PAGE_NURSES;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/nurses")
     public String getAllNurses(Model model) {
         model.addAttribute(USERS, userService.getUsersByRole(NURSE));
         return PAGE_NURSES;
     }
 
-    @GetMapping("/doctors/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/appoint/doctor/{id}")
     public String setAsDoctor(@PathVariable long id, Model model) {
         model.addAttribute(USER, new DoctorDto(userService.findById(id)));
         return PAGE_DOCTOR_REGISTRATION;
     }
 
-    @PostMapping("/doctors/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/doctor/define/qualification/{id}")
     public String setDoctorQualification(@PathVariable long id, @ModelAttribute DoctorDto user) {
         userService.setDoctorQualification(id, user.getQualification());
         return REDIRECT_TO_PAGE_DOCTORS;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/doctors")
     public String getAllDoctors(Model model) {
         model.addAttribute(USERS, userService.getUsersByRole(DOCTOR));
         return PAGE_DOCTORS;
     }
 
-    @GetMapping("/patients/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/appoint/patient/{id}")
     public String setAsPatient(@PathVariable long id, Model model) {
-        userService.setUserRole(id, PATIENT);
-        model.addAttribute(PATIENT_DTO, new PatientDTO(userService.findById(id)));
-        model.addAttribute(DOCTORS, userService.getUsersByRole(DOCTOR));
+        model.addAttribute(PATIENT_DTO, new PatientDto(userService.findById(id)));
+        model.addAttribute(DOCTORS, getAllDoctors());
         return PAGE_PATIENT_REGISTRATION;
     }
 
-    @PostMapping("/patients/{id}")
-    public String setPatient(@PathVariable long id,
-                             @ModelAttribute("patientDTO") PatientDTO patientDTO) {
-        userService.patientDtoToUsers(patientDTO);
-        return REDIRECT_TO_PAGE_PATIENTS_OF + id+PAGENATION_SORT_BY_DEFAULT;
+    private List<DoctorDto> getAllDoctors() {
+        return userService.getUsersByRole(DOCTOR).stream()
+                .map(DoctorDto::new)
+                .collect(toList());
     }
 
-    @GetMapping("/patients/of/{id}/{pageNo}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/update/patient")
+    public String updatePatientInfo(@ModelAttribute @Valid PatientDto patientDto) {
+        userService.updatePatientInfo(patientDto);
+        return REDIRECT_TO_PAGE_PATIENTS+patientDto.getId()+PREFIX_INFO;
+    }
+
+    @GetMapping("/{id}/patients/page/{pageNo}")
     public String getAllPatients(@PathVariable long id,
                                  @PathVariable int pageNo,
                                  @RequestParam String sortField,
                                  @RequestParam String sortDir,
                                  Model model) {
         Page<User> page = userService.getPatientsByEmployeesId(id, pageNo, defaultPageSize, sortField, sortDir);
-        addToModel(page, model, pageNo, sortField, sortDir);
+        setupModel(model, page, pageNo, sortField, sortDir);
+        model.addAttribute(ID_OF_USER, id);
         return PAGE_PATIENTS;
     }
 
     @GetMapping("/patients/{id}/info")
     public String getPatientInfo(@PathVariable long id, Model model) {
-        model.addAttribute(PATIENT_INFO_DTO, new PatientInfoDto(userService.getUserById(id)));
+        model.addAttribute(PATIENT_INFO_DTO, new PatientDto(userService.getUserById(id), id));
         return PAGE_PATIENT_INFO;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/doctors/page/{pageNo}")
     public String viewPaginationDoctor(@PathVariable int pageNo,
                                        @RequestParam String sortField,
                                        @RequestParam String sortDir,
                                        Model model) {
         Page<User> page = userService.findPaginatedUser(pageNo, defaultPageSize, sortField, sortDir, DOCTOR);
-        addToModel(page, model, pageNo, sortField, sortDir);
+        setupModel(model, page, pageNo, sortField, sortDir);
         return PAGE_DOCTORS;
     }
 
-    Model addToModel(Page<User> page, Model model, int pageNo, String sortField, String sortDir) {
+    private void setupModel(Model model, Page<User> page, int pageNo, String sortField, String sortDir) {
         model.addAttribute(PAGN_CURRENT_PAGE, pageNo);
         model.addAttribute(PAGN_TOTAL_PAGES, page.getTotalPages());
         model.addAttribute(PAGN_TOTAL_USER, page.getTotalElements());
         model.addAttribute(PAGN_SORT_FIELD, sortField);
         model.addAttribute(PAGN_SORT_DIRECTION, sortDir);
-        model.addAttribute(PAGN_REVERSE_SORT_DIR,
-                sortDir.equals(PAGN_ASC) ? PAGN_DESC : PAGN_ASC);
+        model.addAttribute(PAGN_REVERSE_SORT_DIR, sortDir.equals(PAGN_ASC) ? PAGN_DESC : PAGN_ASC);
         model.addAttribute(USERS, page.getContent());
-        return model;
     }
 
 

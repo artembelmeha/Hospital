@@ -6,9 +6,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
           integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
 </head>
-<body style ="background: #eee;" >
+<body th:style="'background: url(/images/111.jpg) no-repeat center center fixed;'">
 <div th:replace="header"></div>
-
-
+<div class="m-5 p-1 width: max-content ">
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1 style="margin: 0 auto; width: max-content" th:text="#{home.message1}"></h1>
+</div>
 </body>
 </html>

@@ -78,7 +78,8 @@
                     <select th:field="*{doctorId}">
                         <option th:each="doctor : ${doctors}"
                                 th:value="${doctor.id}"
-                                th:utext="${doctor.qualification+': '+doctor.firstName +' '+doctor.lastName}"/>
+                                th:text="#{'qualification.'+${doctor.qualification.name().toLowerCase()}}
+                                +': '+${doctor.firstName} +' '+${doctor.lastName} +',  '+ ${doctor.patientsNumber}"/>
                     </select>
                 </td>
             </tr>

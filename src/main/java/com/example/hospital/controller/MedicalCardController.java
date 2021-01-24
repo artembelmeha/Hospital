@@ -28,6 +28,7 @@ public class MedicalCardController {
         return PAGE_HOME;
     }
 
+
     @GetMapping("/{id}")
     public String openMedicalCard(@PathVariable long id, Model model) {
         model.addAttribute(MEDICAL_CARD, medicalCardService.getCardById(id));
