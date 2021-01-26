@@ -56,7 +56,9 @@
                     <label th:text="#{assignment.quantity}">Quantity</label>
                 </td>
                 <td>
-                    <input type="text" th:field="*{quantity}"/>
+
+                    <input type="text" th:field="*{quantity}" th:title="#{message.fromOneTo}"
+                           pattern="[1-9]{1}[0-9]{1}"/>
                 </td>
             </tr>
 
@@ -70,6 +72,7 @@
                                 th:value="${assignmentType}"
                                 th:text="#{'type.'+${assignmentType.name().toLowerCase()}}"/>
                     </select>
+
                 </td>
             </tr>
 

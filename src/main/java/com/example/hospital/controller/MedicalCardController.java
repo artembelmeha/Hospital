@@ -4,6 +4,7 @@ import static com.example.hospital.controller.Constants.*;
 
 import javax.annotation.Resource;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class MedicalCardController {
     @Resource
     private MedicalCardService medicalCardService;
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @PostMapping("/finish/{id}")
     public String finishTreatmentIn(@PathVariable long id, @RequestParam String diagnosis) {
         medicalCardService.dischargePatient(diagnosis, id);

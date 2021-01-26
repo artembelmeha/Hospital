@@ -51,4 +51,5 @@ public interface Constants {
 	String MEDICAL_CARD = "medicalCard";
 	String DIAGNOSIS = "diagnosis";
 	String ID_OF_USER = "id";
+	String FIELD_FIRST_NAME = "firstName";
 }

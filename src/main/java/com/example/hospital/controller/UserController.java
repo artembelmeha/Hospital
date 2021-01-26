@@ -1,32 +1,29 @@
 package com.example.hospital.controller;
 
-import static com.example.hospital.controller.Constants.*;
-import static com.example.hospital.model.Role.*;
-import static java.util.stream.Collectors.toList;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
+import com.example.hospital.dto.DoctorDto;
+import com.example.hospital.dto.PatientDto;
+import com.example.hospital.dto.RegistrationInfo;
+import com.example.hospital.model.User;
+import com.example.hospital.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.hospital.dto.*;
-import com.example.hospital.model.User;
-import com.example.hospital.service.UserService;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.List;
+
+import static com.example.hospital.controller.Constants.*;
+import static com.example.hospital.model.Role.*;
+import static java.util.stream.Collectors.toList;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @Controller
 @RequestMapping("/users")
@@ -134,9 +131,11 @@ public class UserController {
     @GetMapping("/{id}/patients/page/{pageNo}")
     public String getAllPatients(@PathVariable long id,
                                  @PathVariable int pageNo,
-                                 @RequestParam String sortField,
-                                 @RequestParam String sortDir,
+                                 @RequestParam(required = false) String sortField,
+                                 @RequestParam(required = false) String sortDir,
                                  Model model) {
+        sortField = sortField == null ? FIELD_FIRST_NAME : sortField;
+        sortDir = sortDir == null ? PAGN_DESC : sortDir;
         Page<User> page = userService.getPatientsByEmployeesId(id, pageNo, defaultPageSize, sortField, sortDir);
         setupModel(model, page, pageNo, sortField, sortDir);
         model.addAttribute(ID_OF_USER, id);
@@ -152,9 +151,11 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/doctors/page/{pageNo}")
     public String viewPaginationDoctor(@PathVariable int pageNo,
-                                       @RequestParam String sortField,
-                                       @RequestParam String sortDir,
+                                       @RequestParam(required = false) String sortField,
+                                       @RequestParam(required = false) String sortDir,
                                        Model model) {
+        sortField = sortField == null ? FIELD_FIRST_NAME : sortField;
+        sortDir = sortDir == null ? PAGN_DESC : sortDir;
         Page<User> page = userService.findPaginatedUser(pageNo, defaultPageSize, sortField, sortDir, DOCTOR);
         setupModel(model, page, pageNo, sortField, sortDir);
         return PAGE_DOCTORS;

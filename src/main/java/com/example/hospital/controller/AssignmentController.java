@@ -33,12 +33,14 @@ public class AssignmentController {
     @Resource
     private MedicalCardService medicalCardService;
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @GetMapping("/{medicalCardID}")
     public String newAssignment(@PathVariable long medicalCardID, Model model) {
         model.addAttribute(ASSIGNMENT_DTO, new AssignmentDto(medicalCardID));
         return PAGE_ASSIGNMENT_NEW;
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @PostMapping("/add")
     public String createNewAssignment(@ModelAttribute @Valid AssignmentDto assignmentDTO) {
         assignmentService.addNewAssignment(convertToEntity(assignmentDTO));

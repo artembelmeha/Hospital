@@ -20,12 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    private UsernamePasswordAuthenticationFilter authenticationFilter;
-
-    @Autowired
-    public void setAuthenticationFilter(@Lazy UsernamePasswordAuthenticationFilter authenticationFilter) {
-        this.authenticationFilter = authenticationFilter;
-    }
+//    private UsernamePasswordAuthenticationFilter authenticationFilter;
+//
+//    @Autowired
+//    public void setAuthenticationFilter(@Lazy UsernamePasswordAuthenticationFilter authenticationFilter) {
+//        this.authenticationFilter = authenticationFilter;
+//    }
 
 
 

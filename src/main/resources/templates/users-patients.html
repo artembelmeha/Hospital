@@ -48,7 +48,7 @@
     </table>
     <div th:if="${totalPages > 1}">
         <div class="row col-sm-10">
-            <div class="col-sm-2" th:text="#{form.totalRows}+' '+${totalPages}">
+            <div class="col-sm-2" th:text="#{form.totalRows}+' '+${totalUser}">
                 Total Rows: [[${totalUser}]]
             </div>
             <div class="col-sm-1">
@@ -72,6 +72,7 @@
             </div>
         </div>
     </div>
+    </span>
 </div>
 </span>
 </body>

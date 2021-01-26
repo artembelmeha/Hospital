@@ -6,9 +6,6 @@ import com.example.hospital.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 public class DoctorDto extends UserDto{
