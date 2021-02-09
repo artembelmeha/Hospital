@@ -7,9 +7,11 @@ import com.example.hospital.model.User;
 import com.example.hospital.service.AssignmentService;
 import com.example.hospital.service.MedicalCardService;
 import com.example.hospital.service.UserService;
+import org.slf4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,11 +22,13 @@ import static com.example.hospital.controller.Constants.*;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.emptyIfNull;
+import static org.slf4j.LoggerFactory.getLogger;
 
 
 @Controller
 @RequestMapping("/assignment")
 public class AssignmentController {
+    private static final Logger LOGGER = getLogger(AssignmentController.class);
 
     @Resource
     private AssignmentService assignmentService;
@@ -42,7 +46,13 @@ public class AssignmentController {
 
     @PreAuthorize("hasAuthority('DOCTOR')")
     @PostMapping("/add")
-    public String createNewAssignment(@ModelAttribute @Valid AssignmentDto assignmentDTO) {
+    public String createNewAssignment(@ModelAttribute @Valid AssignmentDto assignmentDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            LOGGER.error("Error during binding registrationInfo.");
+
+            bindingResult.getAllErrors().forEach(error -> LOGGER.error(error.getDefaultMessage()));
+            return PAGE_ASSIGNMENT_NEW;
+        }
         assignmentService.addNewAssignment(convertToEntity(assignmentDTO));
         return REDIRECT_TO_MEDICAL_CARD + assignmentDTO.getMedicalCardID();
     }

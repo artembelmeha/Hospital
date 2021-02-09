@@ -27,11 +27,6 @@
 +#{'qualification.'+${patientInfoDto.getDoctorQualification.name().toLowerCase()}}">Doctor</p>
     <a th:text="#{patient.medicalCard}" th:href="@{|/medicalCard/${patientInfoDto.getMedicalCardId()}|}">Medical Card</a>
 
-    <form th:method="POST" th:action="@{|/users/patients/${#authentication.details.id}|}" th:object="${patientInfoDto}">
-        <table>
-
-        </table>
-    </form>
 </div>
 </body>
 </html>

@@ -22,12 +22,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Pattern(regexp = "[A-Z][a-z]+",
+    @Pattern(regexp = "[A-ZА-ЯЇЄҐ][a-zа-яєґ]+",
             message = "[firstName] Must start with a capital letter followed by one or more lowercase letters")
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Pattern(regexp = "[A-Z][a-z]+",
+    @Pattern(regexp = "[A-ZА-ЯЇЄҐ][a-zа-яєґ]+",
             message = "[lastName] Must start with a capital letter followed by one or more lowercase letters")
     @Column(name = "last_name", nullable = false)
     private String lastName;
@@ -36,8 +36,6 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-//    @Pattern(regexp = "(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}",
-//            message = "[password] Must be minimum 6 characters, at least one letter and one number")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -71,6 +69,9 @@ public class User implements UserDetails {
 
     @Column(name = "telephone_number")
     private String telephoneNumber;
+
+    @Column(name = "patients_number")
+    private int patientsNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id", referencedColumnName = "id")

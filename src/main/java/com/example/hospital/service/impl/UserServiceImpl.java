@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
     public void setDoctorQualification(long id, Qualification qualification) {
         User user = findById(id);
         user.setRole(DOCTOR);
+        user.setPatientsNumber(0);
         user.setQualification(qualification);
         userRepository.save(user);
         LOGGER.debug("Qualification [{}] successfully updated for doctor [{}].", qualification.name(), id);
@@ -115,10 +116,15 @@ public class UserServiceImpl implements UserService {
         user.setTelephoneNumber(patientDto.getTelephoneNumber());
         user.setSex(patientDto.getSex());
         user.setRole(PATIENT);
-        user.setDoctor(userRepository.getUserById(patientDto.getDoctorId()));
+
+        User doctor = userRepository.getUserById(patientDto.getDoctorId());
+        doctor.setPatientsNumber(doctor.getPatientsNumber() + 1);
+
+        user.setDoctor(doctor);
         user.setMedicalCard(new MedicalCard());
         user.setOnTreatment(true);
 
+        userRepository.save(doctor);
         userRepository.save(user);
         LOGGER.debug("Patient info successfully updated for user [{}].", patientDto.getId());
         return user;

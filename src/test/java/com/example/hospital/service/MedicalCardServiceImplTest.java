@@ -34,10 +34,15 @@ public class MedicalCardServiceImplTest {
     private MedicalCard medicalCard;
     @Mock
     private User user;
+    @Mock
+    private User doctor;
+
     @InjectMocks
     private MedicalCardServiceImpl testInstance;
 
     private static final long ID = 5;
+    private static final long DOCTOR_ID = 10;
+    private static final int PATIENTS_NUMBER = 4;
     private static final String DIAGNOSIS = "Final diagnosis";
 
     @Test
@@ -60,12 +65,17 @@ public class MedicalCardServiceImplTest {
     public void shouldSetDischargeUserById() {
         when(userRepository.getUserByMedicalCardId(ID)).thenReturn(user);
         when(medicalCardRepository.findMedicalCardById(ID)).thenReturn(Optional.of(medicalCard));
+        when(user.getDoctor()).thenReturn(doctor);
+        when(doctor.getId()).thenReturn(DOCTOR_ID);
+        when(userRepository.getUserById(DOCTOR_ID)).thenReturn(doctor);
+        when(doctor.getPatientsNumber()).thenReturn(PATIENTS_NUMBER);
 
         testInstance.dischargePatient(DIAGNOSIS, ID);
 
         verify(user, times(1)).setDoctor(null);
         verify(user, times(1)).setRole(UNDEFINE);
         verify(user, times(1)).setOnTreatment(false);
+        verify(doctor, times(1)).setPatientsNumber(PATIENTS_NUMBER - 1);
         verify(medicalCard, times(1)).setFinalDiagnosis(DIAGNOSIS);
         verify(medicalCardRepository, times(1)).save(medicalCard);
 

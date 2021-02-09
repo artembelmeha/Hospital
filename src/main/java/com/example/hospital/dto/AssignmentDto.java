@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,11 +22,16 @@ public class AssignmentDto {
     private long id;
     private long medicalCardID;
     private AssignmentType assignmentType;
+
+    @Pattern(regexp = "[\\w\\sА-ЯЇЄҐа-яєґ]{5,}")
     private String name;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private int quantity;
     private int doneTimes;
+
+    @Pattern(regexp = "[\\w\\sА-ЯЇЄҐа-яєґ]{5,}")
     private String currentDiagnosis;
     private String notes;
     private boolean isComplete;

@@ -32,7 +32,8 @@
                    th:href="@{'/users/doctors/page/'+${currentPage}+'?sortField=qualification&sortDir='+${reverseSortDir}}"/>
             </th>
             <th>
-                <a th:text="#{doctor.numberOfPatient}"/>
+                <a th:text="#{doctor.numberOfPatient}"
+                   th:href="@{'/users/doctors/page/'+${currentPage}+'?sortField=patientsNumber&sortDir='+${reverseSortDir}}"/>
             </th>
         </thead>
         </tr>

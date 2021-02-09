@@ -25,13 +25,18 @@
                 <td>
                     <input type="text" th:field="*{currentDiagnosis}"/>
                 </td>
+                <td>
+                    <div style="color: #ff0000" th:if="${#fields.hasErrors('currentDiagnosis')}"
+                         th:text="#{message.name}">Error name
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>
                     <label th:text="#{assignment.date}">Date</label>
                 </td>
                 <td>
-                    <input type="date" th:field="*{date}">
+                    <input type="date" th:field="*{date}" required>
                 </td>
             </tr>
             <tr>
@@ -40,6 +45,11 @@
                 </td>
                 <td>
                     <input type="text" th:field="*{name}"/>
+                </td>
+                <td>
+                    <div style="color: #ff0000" th:if="${#fields.hasErrors('name')}" th:text="#{message.name}">Error
+                        name
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -57,8 +67,8 @@
                 </td>
                 <td>
 
-                    <input type="text" th:field="*{quantity}" th:title="#{message.fromOneTo}"
-                           pattern="[1-9]{1}[0-9]{1}"/>
+                    <input th:type="number" th:field="*{quantity}" th:title="#{message.fromOneTo}"
+                           th:min="1" th:max="100" th:value="1"/>
                 </td>
             </tr>
 
@@ -86,8 +96,8 @@
             </tr>
 
         </table>
-            <input type="hidden" th:field="*{medicalCardID}" th:value="*{medicalCardID}"/>
-<!--            <input type="hidden" th:field="*{nurses}" th:value="*{nurses}"/>-->
+        <input type="hidden" th:field="*{medicalCardID}" th:value="*{medicalCardID}"/>
+        <!--            <input type="hidden" th:field="*{nurses}" th:value="*{nurses}"/>-->
     </form>
 </div>
 </body>

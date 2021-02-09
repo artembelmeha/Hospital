@@ -13,12 +13,12 @@ import javax.validation.constraints.Pattern;
 public class RegistrationInfo {
 
 
-    @Pattern(regexp = "[A-Z][a-z]+",
+    @Pattern(regexp = "[A-ZА-ЯЇЄҐ][a-zа-яєґ]+",
             message = "[firstName] Must start with a capital letter followed by one or more lowercase letters")
     @NotNull
     private String firstName;
 
-    @Pattern(regexp = "[A-Z][a-z]+",
+    @Pattern(regexp = "[A-ZА-ЯЇЄҐ][a-zа-яєґ]+",
             message = "[lastName] Must start with a capital letter followed by one or more lowercase letters")
     @NotNull
     private String lastName;
@@ -27,7 +27,7 @@ public class RegistrationInfo {
     @NotNull
     private String email;
 
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,10}",
+    @Pattern(regexp = "(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}",
             message = "Must be minimum 6 characters, at least: one lowercase" +
                     " latin character, one uppercase latin character and one number")
     private String password;

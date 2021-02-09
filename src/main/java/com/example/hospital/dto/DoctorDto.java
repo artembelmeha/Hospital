@@ -16,6 +16,7 @@ public class DoctorDto extends UserDto{
 
     public DoctorDto(User user) {
         super(user);
+        this.patientsNumber = user.getPatientsNumber();
         this.role = user.getRole();
         this.qualification = user.getQualification();
         this.patientsNumber = user.getPatients().size();
