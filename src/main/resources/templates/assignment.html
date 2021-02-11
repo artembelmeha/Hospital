@@ -31,7 +31,7 @@
                     <label th:text="#{assignment.date}">Date</label>
                 </td>
                 <td>
-                    <input type="date" th:field="*{date}" disabled>
+                    <input th:with="format=#{format.date}" type="text" th:value="${#temporals.format(assignmentDto.date, format)}" disabled>
                 </td>
             </tr>
 
@@ -102,7 +102,7 @@
         <div class="m-1 p-1">
         <br>
         <h3 th:text="#{nurse.listOfAssignedNurse}+':'">List of Nurse</h3>
-        <table border="1">
+        <table border="1" class="text-center">
             <tr>
                 <th th:text="#{list.no}">No.</th>
                 <th th:text="#{list.fullName}">Full name</th>

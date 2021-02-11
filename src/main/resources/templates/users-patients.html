@@ -14,10 +14,10 @@
     <h2 th:text="#{patient.listOfPatients}">List of Patient</h2>
     <br>
     <span th:if="${#authentication.details.id == id}">
-    <table border="1" class = "table table-striped table-responsive-md">
+    <table border="1" class = "table table-striped table-responsive-md text-center">
         <tr>
         <thead>
-            <th >
+            <th>
                 <a th:text="#{login.firstName}"
                    th:href="@{'/users/'+${#authentication.details.id}+'/patients/page/'+${currentPage}+'?sortField=firstName&sortDir='+${reverseSortDir}}"/>
             </th>
@@ -37,7 +37,7 @@
         <tr th:each="user : ${users}">
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
-            <td th:text="${#temporals.format(user.birthDate, 'dd.MM.yyyy')}">
+            <td th:with="format=#{format.date}" th:text="${#temporals.format(user.birthDate,format)}">
             </td>
             <td th:text="${user.email}"></td>
             <td>

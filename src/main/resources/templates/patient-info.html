@@ -20,7 +20,7 @@
     <p th:text="#{login.email}+ ' :    '+${patientInfoDto.getEmail()}">Email</p>
     <p th:text="#{patient.telephoneNumber}+ ' :    '+${patientInfoDto.getTelephoneNumber()}">Telephone</p>
     <p th:text="#{patient.isOnTreatment}+ ' :    '+#{'patient.'+${patientInfoDto.isOnTreatment()}}">On Treatment</p>
-    <p th:text="#{patient.birthDate}+ ' :    '+${patientInfoDto.getBirthDate()}">Birth Date</p>
+    <p th:with="format=#{format.date}" th:text="#{patient.birthDate}+ ' :    '+${#temporals.format(patientInfoDto.getBirthDate(), format)}">Birth Date</p>
     <p th:text="#{patient.sex}+ ' :    '+#{'patient.'+${patientInfoDto.getSex().name().toLowerCase()}}">Sex</p>
     <p th:text="#{patient.doctor}+ ' :    '+${patientInfoDto.getDoctorFirstName}
 + '  '+${patientInfoDto.getDoctorLastName}+ ',  '
